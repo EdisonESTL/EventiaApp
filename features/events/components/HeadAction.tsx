@@ -1,0 +1,77 @@
+import React from "react";
+import { Text, Image, StyleSheet, View } from "react-native";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Entypo from '@expo/vector-icons/Entypo';
+import { StylesDefault } from "../styles/StylesDefault";
+
+function TitleApp() {
+  return (
+    <View style={styles.element1}>
+      <LogoApp />
+      <NameApp />
+    </View>
+  );
+}
+
+function LogoApp() {
+  return (
+    <View style={styles.logo}>
+      <Image style={styles.imageLogo} source={require("../../../assets/images/eventia.png")}/>
+    </View>
+  );
+}
+
+function NameApp() {
+  return (
+    <View style={styles.nameApp}>
+      <Text style={StylesDefault.nameApp}>Eventia</Text>
+    </View>
+  );
+}
+
+function NotificationArea() {
+  return(
+    <View style={styles.element2}>
+      <MaterialIcons name="notifications" size={30} color="black" />
+      <Entypo name="eye" size={30} color="black" />
+      <Entypo name="eye-with-line" size={30} color="black" />
+    </View>
+  );
+}
+
+export function HeadAction() {
+  return (
+    <View style={styles.container}>
+      <TitleApp />
+      <NotificationArea />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  imageLogo: {
+    width: 130,
+    resizeMode: "contain",
+  },
+  logo:{
+    alignItems: "flex-end",
+  },
+  nameApp: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  element1: {
+    flex: 4,
+    flexDirection: "row",
+  },
+  element2: {
+    flex: 1,
+    gap: 10,
+    alignItems: "center",
+  }
+});
