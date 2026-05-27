@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
 import { PropsInputText } from "../types/Events.types";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { StylesDefault } from "../styles/StylesDefault";
@@ -7,9 +7,10 @@ import { StylesDefault } from "../styles/StylesDefault";
 interface InputTextProps extends PropsInputText {
     value?: string;
     onChangeText?: (text: string) => void;
+    keyboardType?: KeyboardTypeOptions;
 }
 
-export function InputText({title, icono, colorIcono, color, placeholder, value, onChangeText}:InputTextProps){
+export function InputText({title, icono, colorIcono, color, placeholder, value, onChangeText, keyboardType}:InputTextProps){
     return(
         <View style={styles.inputText}>
             <Text style={[StylesDefault.bodyText, {color}]}>{title}</Text>
@@ -20,6 +21,7 @@ export function InputText({title, icono, colorIcono, color, placeholder, value, 
                     placeholder={placeholder}
                     value={value}
                     onChangeText={onChangeText}
+                    keyboardType={keyboardType}
                 />
             </View>
         </View>

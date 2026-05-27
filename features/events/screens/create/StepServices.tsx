@@ -9,14 +9,14 @@ import { ServicesTable } from "../../components/ServicesTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getServices } from "../../services/eventService";
 
-export function StepServices({ data, updateData }: PropsStepServices){
+export function StepServices({ data, updateData, errors }: PropsStepServices){
+    
     const [availableServices, setAvailableServices] = useState<Service[]>([]);
 
-    const [services, setServices] = useState<EventService[]>([]);
     const [showModal, setShowModal] = useState(false);
 
     function addService(service: Service) {
-        const exist = services.some(item => item.service.id === service.id);
+        const exist = (data.services || []).some(item => item.service.id === service.id);
 
         if (exist) return;
 
@@ -35,7 +35,7 @@ export function StepServices({ data, updateData }: PropsStepServices){
         setShowModal(false);
     }
 
-    const totalCost = services.reduce(
+    const totalCost = (data.services || []).reduce(
         (acc, service) => acc + service.service.price,
         0
     );
@@ -43,10 +43,6 @@ export function StepServices({ data, updateData }: PropsStepServices){
     useEffect(() => {
         const availableServices = getServices();
         setAvailableServices(availableServices);
-
-        if(data.services){
-            setServices(data.services);
-        }
 
     }, [data.services]); 
 
@@ -75,6 +71,14 @@ export function StepServices({ data, updateData }: PropsStepServices){
             <View style={styles.listService}>
                 <ServicesTable services={data.services || []}/>
             </View>
+
+            {errors?.services?._errors?.[0] && (
+             <View style={StylesDefault.errors}>
+                <Text style={StylesDefault.textError}>
+                    {errors.services._errors[0]}
+                </Text>
+            </View>
+            )}
 
             <View style={styles.addButton}>
                 <ActionButton title="Añadir más servicios"

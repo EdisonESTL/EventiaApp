@@ -1,10 +1,11 @@
 import React from "react";
-import { View, StyleSheet, ScrollView} from "react-native";
+import { View, StyleSheet, ScrollView, Text} from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { InputText, InputTextMultiline } from "../../components/InputText";
 import { PropsStepClient } from "../../types/Events.types";
+import { StylesDefault } from "../../styles/StylesDefault";
 
-export function StepClient({ data, updateData }: PropsStepClient){
+export function StepClient({ data, updateData, errors }: PropsStepClient){
     const eventCustomer = data.event_customer ?? { name: "", phone: "", email: "" };
 
     return(
@@ -12,7 +13,7 @@ export function StepClient({ data, updateData }: PropsStepClient){
             <View style={styles.title}>
             <HeadTitleDefault color="#000000" 
             title="Cliente" 
-            subtitle="Datos de la persona o empresa"/>
+            subtitle="Datos de la persona o empresa"/>            
             </View>
 
             <View style={styles.input}>
@@ -28,7 +29,15 @@ export function StepClient({ data, updateData }: PropsStepClient){
                     name: text
                 }
             })}/>
+            {errors?.event_customer?.name?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.event_customer.name._errors[0]}
+                    </Text>
+                </View>
+            )}
             </View>
+
             <View style={styles.input}>
             <InputText title="Teléfono" 
             icono="phone" 
@@ -37,7 +46,15 @@ export function StepClient({ data, updateData }: PropsStepClient){
             placeholder="099999999"
             value={eventCustomer.phone}
             onChangeText={(text) => updateData({ event_customer: { ...eventCustomer, phone: text } })}/>
+            {errors?.event_customer?.phone?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.event_customer.phone._errors[0]}
+                    </Text>
+                </View>
+            )}
             </View>
+
             <View style={styles.input}>
             <InputText title="Correo electrónico" 
             icono="envelope" 
@@ -46,16 +63,31 @@ export function StepClient({ data, updateData }: PropsStepClient){
             placeholder="example@gmail.com"
             value={eventCustomer.email}
             onChangeText={(text) => updateData({ event_customer: { ...eventCustomer, email: text } })}/>
+            {errors?.event_customer?.email?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.event_customer.email._errors[0]}
+                    </Text>
+                </View>
+            )}
             </View>
+
             <View style={styles.inputMulti}>
             <InputTextMultiline title="Descripción del evento"
                 icono="pencil"
                 colorIcono="#000000"
                 color="#000000"
                 placeholder="Descripcion o notas del evento a tomar en cuenta.."
-                value={data.description}
+                value={data.description ?? ""}
                 onChangeText={(text) => updateData({ description: text })}
             />
+            {errors?.description?._errors?.[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.description._errors[0]}
+                    </Text>
+                </View>
+            )}
             </View>
         </ScrollView>
     );

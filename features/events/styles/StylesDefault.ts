@@ -38,5 +38,12 @@ export const StylesDefault = StyleSheet.create({
     container:{
         flex: 1,
         paddingHorizontal: 5,
+    },
+    errors:{
+        alignItems: "center",
+        marginTop: 5,
+    },
+    textError:{
+        color: "#FF0000"
     }
 });

@@ -13,9 +13,16 @@ import { StepSchedule } from "@/features/events/screens/create/StepSchedule";
 import { StepResume } from "@/features/events/screens/create/StepResume";
 import { Event } from "@/features/events/types/Events.types";
 import { createEvent } from "@/features/events/services/eventService";
+import { clientSchema} from "../../features/events/schemas/client.schema";
+import { eventSchema } from "@/features/events/schemas/event.schema";
+import { serviceSchema } from "@/features/events/schemas/service.schema";
+import { financialSchema } from "@/features/events/schemas/financial.schema";
 
 export default function Create(){
     const [step, setStep] = useState(1);
+
+    //Estado para errores
+    const [errors, setErrors] = useState<any>({});
 
     //Para crear un nuevo evento
     const [newEvent, setNewEvent] = useState<Partial<Event>>({
@@ -33,6 +40,7 @@ export default function Create(){
         }));
     };
 
+    //Funcion para guardar el evento
     const saveEvent = (newEvent: Partial<Event>) => {
         try {
 
@@ -44,6 +52,44 @@ export default function Create(){
 
             console.log("ERROR GUARDANDO:", error);
         }
+    }
+
+    //Función para validar los pasos
+    const validateStep = () => {
+
+        let result
+
+        switch(step){
+            case 1:
+                result = clientSchema.safeParse(newEvent);
+                break;
+            
+            case 2:
+                result = eventSchema.safeParse(newEvent);
+                break;
+
+            case 3:
+                result = serviceSchema.safeParse(newEvent);
+                break;
+        
+            case 4:
+                result = financialSchema.safeParse(newEvent);
+                break;
+
+            default:
+                return true;
+        }
+
+        if(!result.success){
+
+            setErrors(result.error.format());
+
+            return false;
+        }
+
+        setErrors({});
+
+        return true;
     }
     
     return(
@@ -68,10 +114,10 @@ export default function Create(){
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={styles.keyboardContainer}
             > 
-                    {step === 1 && <StepClient data={newEvent} updateData={updateEventData} />}
-                    {step === 2 && <StepEvent data={newEvent} updateData={updateEventData} />}
-                    {step === 3 && <StepServices data={newEvent} updateData={updateEventData} />}
-                    {step === 4 && <StepFinancial data={newEvent} updateData={updateEventData} />}
+                    {step === 1 && <StepClient data={newEvent} updateData={updateEventData} errors={errors} />}
+                    {step === 2 && <StepEvent data={newEvent} updateData={updateEventData} errors={errors} />}
+                    {step === 3 && <StepServices data={newEvent} updateData={updateEventData} errors={errors} />}
+                    {step === 4 && <StepFinancial data={newEvent} updateData={updateEventData} errors={errors}/>}
                     {step === 5 && <StepLogistic data={newEvent} updateData={updateEventData} />}
                     {step === 6 && <StepSchedule data={newEvent} updateData={updateEventData} />}
                     {step === 7 && <StepResume data={newEvent} updateData={updateEventData} />}
@@ -90,6 +136,10 @@ export default function Create(){
                         <ActionButton title="Siguiente"
                         icono="arrow-forward"
                         onPress={() =>  {
+                            const isValid = validateStep();
+
+                            if(!isValid) return;
+
                             if(step < 7){
                                 setStep(step + 1)
                             }}

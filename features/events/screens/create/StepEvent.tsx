@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { InputText } from "../../components/InputText";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { DropDownPick } from "../../components/DropDownPick";
@@ -7,8 +7,10 @@ import { DateTimePick } from "../../components/DateTimePick";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { DropdownItem, PropsStepEvent } from "../../types/Events.types";
 import { getEventTypes, getPackages } from "../../services/eventService";
+import { StylesDefault } from "../../styles/StylesDefault";
 
-export function StepEvent({ data, updateData }: PropsStepEvent){
+export function StepEvent({ data, updateData, errors }: PropsStepEvent){
+    
     const [eventTypes, setEventTypes] = useState<DropdownItem[]>([]);
     const [eventPackages, setEventPackages] = useState<DropdownItem[]>([]);
 
@@ -137,6 +139,13 @@ export function StepEvent({ data, updateData }: PropsStepEvent){
                 value={data?.name}
                 onChangeText={(text) => updateData({ name: text })}
                 />
+                {errors?.name?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.name._errors[0]}
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.input}>
             <DropDownPick
@@ -148,6 +157,13 @@ export function StepEvent({ data, updateData }: PropsStepEvent){
                 placeholder="Seleccione"
                 zIndex={1000}
                 />
+                {errors?.event_type?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.event_type._errors[0] }
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.input}>
             <DropDownPick
@@ -159,6 +175,13 @@ export function StepEvent({ data, updateData }: PropsStepEvent){
                 placeholder="Seleccione"
                 zIndex={999}
                 />
+                {errors?.event_package?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.event_package._errors[0] }
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.input}>
             <InputText title="Ubicación"
@@ -168,6 +191,13 @@ export function StepEvent({ data, updateData }: PropsStepEvent){
             placeholder="Ubicacion......."
             value={data?.location || ''}
             onChangeText={(text) => updateData({ location: text })}/>
+                {errors?.location?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.location._errors[0] }
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.input}>
             <DateTimePick title="Fecha del evento"
@@ -177,6 +207,13 @@ export function StepEvent({ data, updateData }: PropsStepEvent){
             show={showStartDate}
             setShow={setShowStartDate}
             onChange={onChangeStartDate}/>
+                {errors?.start_datetime?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.start_datetime._errors[0] }
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.clockSection}>
                 <DateTimePick title="Hora inicio"
@@ -194,6 +231,13 @@ export function StepEvent({ data, updateData }: PropsStepEvent){
                 setShow={setShowEndTime}
                 onChange={onChangeEndTime}/>
             </View>
+            {errors?.end_datetime?._errors[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.end_datetime._errors[0] }
+                    </Text>
+                </View>
+                )}
         </ScrollView>
     );
 }

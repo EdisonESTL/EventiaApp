@@ -290,24 +290,28 @@ export type PropsScheduleList = {
 export type PropsStepClient = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
+  errors: any;
 }
 
 //Para Step Event
 export type PropsStepEvent = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
+  errors: any;
 }
 
 //Para Step Services
 export type PropsStepServices = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
+  errors: any;
 }
 
 //Para Step Financial
 export type PropsStepFinancial = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
+  errors: any;
 }
 
 //Para VoucherSelector

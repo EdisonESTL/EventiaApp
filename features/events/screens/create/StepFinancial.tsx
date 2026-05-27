@@ -10,7 +10,7 @@ import { StylesDefault } from "../../styles/StylesDefault";
 import { DropDownPick } from "../../components/DropDownPick";
 import { getPaymentMethods } from "../../services/eventService";
 
-export function StepFinancial({ data, updateData }: PropsStepFinancial){
+export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
     const [paymentType, setPaymentType] = useState<PaymentMethod | null>(data.payment_method || null);
     const [payTypes, setPayTypes] = useState<DropdownItem[]>([]);
 
@@ -37,6 +37,13 @@ export function StepFinancial({ data, updateData }: PropsStepFinancial){
             <View style={styles.inputSelector
             }>
                 <VoucherSelector valueSelected={data.receipt_type?.name ?? "recibo"} updateData={updateData}/>
+                {errors?.receipt_type?._errors?.[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.receipt_type._errors[0]}
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.input}>
                 <InputText title="Costo total del evento" 
@@ -45,19 +52,48 @@ export function StepFinancial({ data, updateData }: PropsStepFinancial){
                 color="#000000"
                 placeholder="Ejemplo Nombre"
                 value={data.total_cost?.toString() || ""}/>
+                {errors?.total_cost?._errors?.[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.total_cost._errors[0]}
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.input}>
                 <InputText title="Abono realizado" 
                 icono="money" 
                 colorIcono="#000000"
                 color="#000000"
-                placeholder="Ejemplo Nombre"
-                value={data.paid_amount?.toString() || ""}
-                onChangeText={(text) =>
-                    updateData({
-                        paid_amount: Number(text)
-                    })
-                }/>
+                placeholder="0.0"
+                value={data.paid_amount?.toString() || "0"}
+                onChangeText={(text) => {
+
+                    if(text.trim() === ""){
+                        updateData({
+                            paid_amount: 0
+                        });
+                        return;
+                    }
+
+                    const validNumber = /^[0-9]*\.?[0-9]*$/;
+
+                    if(validNumber.test(text)){
+
+                        updateData({
+                            paid_amount: Number(text)
+                        });
+                    }
+                }}
+                keyboardType="decimal-pad"
+                />
+                {errors?.paid_amount?._errors?.[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.paid_amount._errors[0]}
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.outBalanceBox}>
                 <OutstandingBalance title="Saldo Pendiente"
@@ -85,6 +121,13 @@ export function StepFinancial({ data, updateData }: PropsStepFinancial){
                 placeholder="Efectivo"
                 zIndex={1050}
                 />
+                {errors?.payment_method?._errors?.[0] && (
+                <View style={StylesDefault.errors}>
+                    <Text style={StylesDefault.textError}>
+                        {errors.payment_method._errors[0]}
+                    </Text>
+                </View>
+                )}
             </View>
             <View style={styles.newsContainer}>
                 <NewsBox title="El saldo se calcula automaticamente en base al costo y abonos ingresados" icono="shield"
