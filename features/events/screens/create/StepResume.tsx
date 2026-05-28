@@ -115,7 +115,7 @@ export function StepResume({data, updateData}: PropsStepResume){
                     {data?.total_cost !== undefined && (
                         <SectionOnlyText
                             title="Saldo pendiente"
-                            subtitle={`${data.total_cost - (data.paid_amount || 0)}`}
+                            subtitle={`${parseFloat(data.total_cost || "0") - parseFloat(data.paid_amount || "0")}`}
                         />
                     )}
                     {data?.payment_method !== undefined && (

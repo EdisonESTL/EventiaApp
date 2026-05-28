@@ -30,6 +30,12 @@ export const initDB = async () => {
       ico TEXT NOT NULL DEFAULT 'cash',
       deleted INTEGER NOT NULL DEFAULT(0)
     );
+
+    CREATE TABLE IF NOT EXISTS status_types (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      deleted INTEGER NOT NULL DEFAULT(0)
+    );
     
     CREATE TABLE IF NOT EXISTS packages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,6 +60,8 @@ export const initDB = async () => {
       paid_amount REAL DEFAULT 0,
       payment_method_id INTEGER NOT NULL,
       receipt_type_id INTEGER NOT NULL,
+
+      status_type_id INTEGER NOT NULL,
       
       deleted INTEGER NOT NULL DEFAULT(0),
 
@@ -62,6 +70,7 @@ export const initDB = async () => {
       FOREIGN KEY (package_id) REFERENCES packages(id),
       FOREIGN KEY (payment_method_id) REFERENCES payment_methods(id),
       FOREIGN KEY (receipt_type_id) REFERENCES receipt_types(id)
+      FOREIGN KEY (status_type_id) REFERENCES status_types(id)
     );
 
     CREATE TABLE IF NOT EXISTS event_schedule (
@@ -189,6 +198,15 @@ export const seedDB = () => {
       VALUES 
         (1, 'Factura', 'file-document'),
         (2, 'Recibo', 'receipt')
+    `);
+
+    // STATUS TYPES
+    db.runSync(`
+      INSERT OR IGNORE INTO status_types (id, name)
+      VALUES 
+        (0, 'in_progress'),
+        (1, 'completed'),
+        (2, 'canceled')
     `);
 
     db.execSync("COMMIT");

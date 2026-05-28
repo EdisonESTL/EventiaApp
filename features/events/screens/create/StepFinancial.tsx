@@ -14,10 +14,10 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
     const [paymentType, setPaymentType] = useState<PaymentMethod | null>(data.payment_method || null);
     const [payTypes, setPayTypes] = useState<DropdownItem[]>([]);
 
-    const totalAmount = (total_cost: number | undefined, paid_amount: number | undefined) => {
-        const total = total_cost || 0;
-        const paid = paid_amount || 0;
-        return total - paid;
+    const totalAmount = (total_cost: string | "0", paid_amount: string | "0") => {
+        const total = total_cost || "0";
+        const paid = paid_amount || "0";
+        return parseFloat(total) - parseFloat(paid);
     };
 
     useEffect(() => {
@@ -71,7 +71,7 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
 
                     if(text.trim() === ""){
                         updateData({
-                            paid_amount: 0
+                            paid_amount: "0"
                         });
                         return;
                     }
@@ -81,7 +81,7 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                     if(validNumber.test(text)){
 
                         updateData({
-                            paid_amount: Number(text)
+                            paid_amount: text
                         });
                     }
                 }}
@@ -100,7 +100,7 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                 icono="usd"
                 backgroundColor="#47DDAA25"
                 colorIcono="#000000"
-                value={totalAmount(data.total_cost, data.paid_amount)}/>
+                value={totalAmount(data.total_cost ?? "0", data.paid_amount ?? "0")}/>
             </View>
             <View style={styles.inputPM}>
                 <DropDownPick title="Forma de pago" icono="credit-card"
@@ -118,7 +118,7 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                     });
                 }}
                 items={payTypes}
-                placeholder="Efectivo"
+                placeholder="Seleccione una opción"
                 zIndex={1050}
                 />
                 {errors?.payment_method?._errors?.[0] && (

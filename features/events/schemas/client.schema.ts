@@ -21,7 +21,7 @@ export const clientSchema = z.object({
 
   description: z
     .string({
-        error: "la descripción es obligatorio",
+        error: "Faltan campos de llenar",
     })
     .min(10, "La descripción es muy corta"),
 });

@@ -46,8 +46,8 @@ export interface Event{
   event_type: EventType;
   event_package: Package;
 
-  total_cost: number;
-  paid_amount: number;
+  total_cost: string;
+  paid_amount: string;
   payment_method: PaymentMethod;
   receipt_type: ReceiptType;
 
@@ -70,7 +70,7 @@ export interface EventSchedule{
 export interface Service{
   id: number;
   name: string;
-  price: number;
+  price: string;
   description: string;
 }
 
@@ -240,7 +240,7 @@ export type PropsResumeServices={
   title: string;
   value: string;
   subTitle: string;
-  valueCost: number;
+  valueCost: string;
 }
 
 //Para Services Table

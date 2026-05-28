@@ -36,7 +36,7 @@ export function StepServices({ data, updateData, errors }: PropsStepServices){
     }
 
     const totalCost = (data.services || []).reduce(
-        (acc, service) => acc + service.service.price,
+        (acc, service) => acc + parseFloat(service.service.price),
         0
     );
 
@@ -48,7 +48,7 @@ export function StepServices({ data, updateData, errors }: PropsStepServices){
 
     useEffect(() => {
         updateData({
-            total_cost: totalCost,
+            total_cost: totalCost.toString(),
         });
     }, [totalCost, updateData]);
 
@@ -65,7 +65,7 @@ export function StepServices({ data, updateData, errors }: PropsStepServices){
                 title="Paquete seleccionado"
                 value={data.event_package?.name || "Ninguno"}
                 subTitle="Costo total servicios"
-                valueCost={totalCost}/>
+                valueCost={totalCost.toString()}/>
             </View>
 
             <View style={styles.listService}>

@@ -67,8 +67,8 @@ export const createEvent = (event: Event) => {
         event.event_type.id, // ID del tipo de evento seleccionado
         event.event_package.id, // ID del paquete seleccionado
 
-        event.total_cost,
-        event.paid_amount,
+        parseFloat(event.total_cost || "0"),
+        parseFloat(event.paid_amount || "0"),
         event.payment_method.id, // ID del método de pago seleccionado
         event.receipt_type.id, // ID del tipo de recibo seleccionado
         0 // deleted por defecto en 0
