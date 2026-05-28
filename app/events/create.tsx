@@ -44,15 +44,40 @@ export default function Create(){
     const saveEvent = (newEvent: Partial<Event>) => {
         try {
 
-            createEvent(newEvent as Event);
+            if(isValidBaseEvent(newEvent)){
+                createEvent(newEvent as Event);
+                router.push("/");
+            }else{
+                alert("Llene la informacion basica para guardar el evento:\n -Cliente \n -Evento \n -Servicio (minimo 1) \n -Informacion de pago");
+            }
 
-            router.push("/");
+            
 
         } catch(error){
 
             console.log("ERROR GUARDANDO:", error);
         }
     }
+
+    //validar campos minimos para guardar
+    const isValidBaseEvent = (event: Partial<Event>) => {
+
+        return (
+            !!event.event_customer &&
+            !!event.description &&
+            !!event.name &&
+            !!event.event_type &&
+            !!event.event_package &&
+            !!event.location &&
+            !!event.start_datetime &&
+            !!event.end_datetime &&
+            !!event.receipt_type &&
+            !!event.payment_method &&
+            !!event.paid_amount &&
+            !!event.services &&
+            event.services.length > 0
+        );
+    };
 
     //Función para validar los pasos
     const validateStep = () => {

@@ -98,7 +98,6 @@ export interface EventEquipment{
 export interface Staff{
   id: number;
   name: string;
-  role: string;
   phone: string;
 }
 
@@ -106,6 +105,7 @@ export interface EventStaff{
   id?: number;
   event: number;
   staff: Staff;
+  role: string;
 }
 
 export type EventListItem = {

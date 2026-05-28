@@ -34,11 +34,11 @@ export function StepLogistic({ data, updateData }: PropsStepLogistic){
                 id: Date.now(),
                 event: 0, // Este valor se asignaría al guardar el evento completo
                 staff: {
-                    id: Date.now(),
-                    role: staffForm.role,
+                    id: Date.now(),                    
                     name: staffForm.name,
                     phone: staffForm.phone
-                }
+                },
+                role: staffForm.role,
             };
             setStaffList([...staffList, newStaff]);
             // Limpiar formulario

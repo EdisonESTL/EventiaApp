@@ -1,9 +1,36 @@
 import { db } from "../../../database/dataBase";
-import { Event, DropdownItem, EventType, Package, Service, PaymentMethod, ReceiptType, EventListItem } from "../types/Events.types";
+import { Event, DropdownItem, EventType, Package, Service, PaymentMethod, ReceiptType, EventListItem, EventEquipment, EventStaff, EventSchedule } from "../types/Events.types";
 
 export const createEvent = (event: Event) => {
   try {
     db.execSync("BEGIN TRANSACTION");
+
+    const eventID = createEventBase(event)
+
+    if(event.equipment?.length > 0){
+      addEquipmentToEvent(eventID, event.equipment)
+    }
+
+    if(event.staff?.length > 0){
+      addStaffToEvent(eventID, event.staff)
+    }
+
+    if(event.schedule?.length > 0){
+      addScheduleToEvent(eventID, event.schedule)
+    }
+
+    db.execSync("COMMIT");
+
+    console.log("Evento guardado correctamente");
+  } catch (error) {
+    db.execSync("ROLLBACK");
+        
+    console.log("Error al guardar evento:", error);
+  }
+};
+
+export const createEventBase = (event: Event): number => {
+  try {
     //1 Guardar cliente
     let customer = db.getFirstSync<{id:number}>(
       `SELECT id FROM customers 
@@ -54,8 +81,9 @@ export const createEvent = (event: Event) => {
         paid_amount,
         payment_method_id,
         receipt_type_id,
+        status_type_id,
         deleted
-        ) VALUES (?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)`,
       [
         event.name,
         event.location,
@@ -71,22 +99,14 @@ export const createEvent = (event: Event) => {
         parseFloat(event.paid_amount || "0"),
         event.payment_method.id, // ID del método de pago seleccionado
         event.receipt_type.id, // ID del tipo de recibo seleccionado
+        0,
         0 // deleted por defecto en 0
       ]
     );
 
-    const eventId = result.lastInsertRowId;
+    const eventId = Number(result.lastInsertRowId);
 
-    //3 schedule
-    event.schedule.forEach((d) => {
-      db.runSync(
-        `INSERT INTO event_schedule (event_id, title, start_time, end_time)
-         VALUES (?, ?, ?, ?)`,
-        [eventId, d.title, d.start_time, d.end_time]
-      );
-    });
-
-    //4 services
+    //3 services
     event.services.forEach((s) => {
         db.runSync(
             `INSERT INTO event_services (event_id, service_id, quantity)
@@ -99,94 +119,135 @@ export const createEvent = (event: Event) => {
         );
     });
 
-    //5 Equipments
-    event.equipment.forEach((e) => {
-        // Buscar equipo existente
-        let equipment = db.getFirstSync<{id:number}>(
-            `SELECT id FROM equipment WHERE name = ?`,
-            [e.equipment.name]
-        );
-
-        let equipmentId:number;
-
-        // Si no existe, crearlo
-        if(!equipment){
-
-            const insert = db.runSync(
-                `INSERT INTO equipment
-                (name, total_quantity, available_quantity)
-                VALUES (?, ?, ?)`,
-                [
-                    e.equipment.name,
-                    e.equipment.total_quantity,
-                    e.equipment.available_quantity
-                ]
-            );
-
-            equipmentId = Number(insert.lastInsertRowId);
-
-        } else {
-
-            equipmentId = equipment.id;
-        }
-
-        // Relacionar con evento
-        db.runSync(
-            `INSERT INTO event_equipment
-            (event_id, equipment_id, quantity)
-            VALUES (?, ?, ?)`,
-            [
-                eventId,
-                equipmentId,
-                e.quantity
-            ]
-        );
-    });
-
-    //6 Staff
-    event.staff.forEach((s) => {
-        // Buscar staff existente
-        let staff = db.getFirstSync<{id:number}>(
-            `SELECT id FROM staff WHERE name = ? `,
-            [s.staff.name]
-        );
-        let staffId:number;
-
-        // Si no existe, crearlo
-        if(!staff){
-            const insert = db.runSync(
-                `INSERT INTO staff
-                (name, phone)
-                VALUES (?, ?)`,
-                [
-                    s.staff.name,
-                    s.staff.phone
-                ]
-            );
-            staffId = Number(insert.lastInsertRowId);
-        } else {
-            staffId = staff.id;
-        }
-        // Relacionar con evento
-        db.runSync(
-            `INSERT INTO event_staff
-            (role, event_id, staff_id)
-            VALUES (?, ?, ?)`,
-            [
-                s.staff.role,
-                eventId,
-                staffId
-            ]
-        );
-    });
-
-    db.execSync("COMMIT");
-
     console.log("Evento guardado correctamente");
-  } catch (error) {
-    db.execSync("ROLLBACK");
-        
+
+    return Number(eventId);
+
+  } catch (error) {        
     console.log("Error al guardar evento:", error);
+    throw error;
+  }
+}
+
+export const addEquipmentToEvent = (
+  eventId: number,
+  equipmentList: EventEquipment[]
+) => {
+
+  try {
+    equipmentList.forEach((e) => {
+
+      let equipment = db.getFirstSync<{id:number}>(
+        `SELECT id FROM equipment WHERE name = ?`,
+        [e.equipment.name]
+      );
+
+      let equipmentId:number;
+
+      if(!equipment){
+
+        const insert = db.runSync(
+          `INSERT INTO equipment
+          (name, total_quantity, available_quantity)
+          VALUES (?, ?, ?)`,
+          [
+            e.equipment.name,
+            e.equipment.total_quantity,
+            e.equipment.available_quantity
+          ]
+        );
+
+        equipmentId = Number(insert.lastInsertRowId);
+
+      } else {
+
+        equipmentId = equipment.id;
+      }
+
+      db.runSync(
+        `INSERT INTO event_equipment
+        (event_id, equipment_id, quantity)
+        VALUES (?, ?, ?)`,
+        [
+          eventId,
+          equipmentId,
+          e.quantity
+        ]
+      );
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addStaffToEvent = (
+  eventId: number,
+  staffList: EventStaff[]
+) => {
+
+  try {
+
+    staffList.forEach((e) => {
+
+      let staff = db.getFirstSync<{id:number}>(
+        `SELECT id FROM staff WHERE name = ?`,
+        [e.staff.name]
+      );
+
+      let staffId:number;
+
+      if(!staff){
+
+        const insert = db.runSync(
+          `INSERT INTO staff
+          (name, phone)
+          VALUES (?, ?)`,
+          [
+            e.staff.name,
+            e.staff.phone,
+          ]
+        );
+
+        staffId = Number(insert.lastInsertRowId);
+
+      } else {
+
+        staffId = staff.id;
+      }
+
+      db.runSync(
+        `INSERT INTO event_staff
+        (event_id, staff_id, role)
+        VALUES (?, ?, ?)`,
+        [
+          eventId,
+          staffId,
+          e.role
+        ]
+      );
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addScheduleToEvent = (
+  eventId: number,
+  scheduleList: EventSchedule[]
+) => {
+
+  try {
+    scheduleList.forEach((e) => {
+      db.runSync(
+        `INSERT INTO event_schedule (event_id, title, start_time, end_time)
+         VALUES (?, ?, ?, ?)`,
+        [eventId, e.title, e.start_time, e.end_time]
+      );
+    });
+
+  } catch (error) {
+    console.log(error);
   }
 };
 

@@ -204,9 +204,10 @@ export const seedDB = () => {
     db.runSync(`
       INSERT OR IGNORE INTO status_types (id, name)
       VALUES 
-        (0, 'in_progress'),
-        (1, 'completed'),
-        (2, 'canceled')
+        (0, 'draft'),
+        (1, 'in_progress'),
+        (2, 'completed'),
+        (3, 'canceled')
     `);
 
     db.execSync("COMMIT");
