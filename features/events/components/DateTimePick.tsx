@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {PropDateTimePick} from "../types/Events.types"
 import { StylesDefault } from "../styles/StylesDefault";
 
-export function DateTimePick({title, icono, mode, value, show, setShow, onChange}:PropDateTimePick){
+export function DateTimePick({title, icono, mode, value, show, readonly,setShow, onChange}:PropDateTimePick){
     const formattedValue = mode === "date"
             ? value.toLocaleDateString()
             : value.toLocaleTimeString([], {
@@ -21,6 +21,7 @@ export function DateTimePick({title, icono, mode, value, show, setShow, onChange
                 <Pressable
                     style={styles.InputDate}                            
                     onPress={() => setShow(true)}
+                    disabled={readonly}
                 >
                     <Text>
                         {formattedValue}

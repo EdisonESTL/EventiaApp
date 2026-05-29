@@ -9,7 +9,7 @@ import { StylesDefault } from "../../styles/StylesDefault";
 import { ScheduleList } from "../../components/ScheduleList";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export function StepSchedule({ data, updateData }: PropsStepSchedule){
+export function StepSchedule({ data, updateData, readonly }: PropsStepSchedule){
     const [scheduleList, setScheduleList] = useState<EventSchedule[]>(data.schedule || []);
 
     const [showModal, setShowModal] = useState(false);
@@ -55,24 +55,36 @@ export function StepSchedule({ data, updateData }: PropsStepSchedule){
 
     return(
         <View style={styles.container}>
+
             <View style={styles.headContainer}>
                 <HeadTitleDefault title="Cronograma del evento"
                 subtitle="Agenda de actividades y tiempos"
                 color="#000000"
                 icono="clock"/>
             </View>
+
             <View style={styles.clockContainer}>
-                <ClockEvent initDate={data.start_datetime ?? ""} endDate={data.end_datetime ?? ""} />
+
+                <ClockEvent initDate={data.start_datetime ?? ""} 
+                endDate={data.end_datetime ?? ""} />
+
             </View>
+
             <ScrollView style={styles.listContainer}>
+
                 <ScheduleList schedules={scheduleList}/>
+
             </ScrollView>
+
             <View style={styles.activityContainer}>
+
                 <ActionButton title="Agregar actividad"
                 onPress={() => setShowModal(true)}
                 icono="add-circle"
                 color="#ffffff"
-                colorsButton={["#541360","#AE27C6","#AE27C6"]}/>
+                colorsButton={["#541360","#AE27C6","#AE27C6"]}
+                readonly={readonly}/>
+
             </View>
 
             { /* aquí iría el modal para ingresar las actividades */}
@@ -112,21 +124,24 @@ export function StepSchedule({ data, updateData }: PropsStepSchedule){
                                      color="#000000"
                                      placeholder="Actividad a realizar"
                                      value={activities.title}
-                                     onChangeText={(text) => setActivities({...activities, title: text})}/>
+                                     onChangeText={(text) => setActivities({...activities, title: text})}
+                                     readonly={readonly}/>
                                      <InputText title="Hora de inicio"
                                      icono="clock-o"
                                      colorIcono="#000000"
                                      color="#000000"
                                      placeholder="Hora de inicio"
                                      value={activities.start_time}
-                                     onChangeText={(text) => setActivities({...activities, start_time: text})}/>                            
+                                     onChangeText={(text) => setActivities({...activities, start_time: text})}
+                                     readonly={readonly}/>                            
                                      <InputText title="Hora de finalización"
                                      icono="clock-o"
                                      colorIcono="#000000"
                                      color="#000000"
                                      placeholder="Hora de finalización"
                                      value={activities.end_time}
-                                     onChangeText={(text) => setActivities({...activities, end_time: text})}/>
+                                     onChangeText={(text) => setActivities({...activities, end_time: text})}
+                                     readonly={readonly}/>
                                  </View>
                              </ScrollView>
                              <View style={styles.modalButtons}>
@@ -134,12 +149,14 @@ export function StepSchedule({ data, updateData }: PropsStepSchedule){
                                  icono="close"
                                  onPress={handleCloseModal}
                                  colorsButton={["#605262","#605262","#605262"]}
-                                 color="#ffffff"/>
+                                 color="#ffffff"
+                                 readonly={readonly}/>
                                  <ActionButton title="Guardar"
                                  icono="save"
                                  onPress={handleAddActivity}
                                  colorsButton={["#541360","#AE27C6","#AE27C6"]}
-                                 color="#ffffff"/>                            
+                                 color="#ffffff"
+                                 readonly={readonly}/>                            
                              </View>
                          </View>
                      </View>

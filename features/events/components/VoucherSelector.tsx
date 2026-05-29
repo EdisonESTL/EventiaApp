@@ -5,7 +5,7 @@ import { StylesDefault } from "../styles/StylesDefault";
 import { PropsVoucherOption, PropsVoucherSelector, ReceiptType } from "../types/Events.types";
 import { getReceiptTypes } from "../services/eventService";
 
-export default function VoucherSelector({valueSelected, updateData}: PropsVoucherSelector) {
+export default function VoucherSelector({valueSelected, updateData, readonly}: PropsVoucherSelector) {
   const [selected, setSelected] = useState<string | null>(valueSelected);
   const [optionsRT, setOptionsRT] = useState<ReceiptType[]>([]);
 
@@ -33,14 +33,16 @@ export default function VoucherSelector({valueSelected, updateData}: PropsVouche
             icono={option.ico}
             selected={selected === option.name}
             onPress={presSelected(option)}
+            readonly={readonly}
           />
         ))}
       </View>
+
     </View>
   );
 }
 
-function VoucherOption({title, icono, selected, onPress,}: PropsVoucherOption) {
+function VoucherOption({title, icono, selected, onPress, readonly}: PropsVoucherOption) {
   return (
     <Pressable
       onPress={onPress}
@@ -48,6 +50,7 @@ function VoucherOption({title, icono, selected, onPress,}: PropsVoucherOption) {
         styles.optionButton,
         selected && styles.optionButtonSelected,
       ]}
+      disabled={readonly}
     >
       <MaterialCommunityIcons
         name={icono}
@@ -71,12 +74,6 @@ const styles = StyleSheet.create({
   container: {
     gap: 15,
   },
-
-  // title: {
-  //   fontSize: 20,
-  //   fontWeight: "500",
-  //   color: "#000",
-  // },
 
   optionsContainer: {
     flexDirection: "row",

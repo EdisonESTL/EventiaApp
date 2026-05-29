@@ -3,8 +3,9 @@ import { Text, View, StyleSheet} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { CircleButton } from "./CircleButton";
 import { StylesDefault } from "../styles/StylesDefault";
+import { PropsCustomHeader } from "../types/Events.types";
 
-export function CustomHeader({ icono1, onBack, icono2, onSave, title, subtitle, colors, color, colorIcono }: PropsCustomHeader) {
+export function CustomHeader({ icono1, onBack, icono2, onSave, title, subtitle, colors }: PropsCustomHeader) {
     return (
         <LinearGradient
             colors={colors}

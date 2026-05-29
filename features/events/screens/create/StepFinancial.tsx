@@ -10,8 +10,10 @@ import { StylesDefault } from "../../styles/StylesDefault";
 import { DropDownPick } from "../../components/DropDownPick";
 import { getPaymentMethods } from "../../services/eventService";
 
-export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
+export function StepFinancial({ data, updateData, errors, readonly }: PropsStepFinancial){
+
     const [paymentType, setPaymentType] = useState<PaymentMethod | null>(data.payment_method || null);
+
     const [payTypes, setPayTypes] = useState<DropdownItem[]>([]);
 
     const totalAmount = (total_cost: string | "0", paid_amount: string | "0") => {
@@ -27,16 +29,24 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
     return(
         <ScrollView style={styles.container}
         contentContainerStyle={{ paddingBottom: 50 }}
-        nestedScrollEnabled>
+        nestedScrollEnabled
+        >
+
             <View style={styles.title}>
                 <HeadTitleDefault color="#000000" 
                 title="Información financiera"
                 subtitle="Detalles de pago y comprobantes"
                 icono="cash"/>
             </View>
+
             <View style={styles.inputSelector
             }>
-                <VoucherSelector valueSelected={data.receipt_type?.name ?? "recibo"} updateData={updateData}/>
+                <VoucherSelector 
+                valueSelected={data.receipt_type?.name ?? "recibo"} 
+                updateData={updateData}
+                readonly={readonly}
+                />
+
                 {errors?.receipt_type?._errors?.[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -44,14 +54,19 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                     </Text>
                 </View>
                 )}
+
             </View>
+
             <View style={styles.input}>
                 <InputText title="Costo total del evento" 
                 icono="shopping-cart" 
                 colorIcono="#000000"
                 color="#000000"
                 placeholder="Ejemplo Nombre"
-                value={data.total_cost?.toString() || ""}/>
+                value={data.total_cost?.toString() || ""}
+                readonly={readonly}
+                />
+
                 {errors?.total_cost?._errors?.[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -59,8 +74,11 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                     </Text>
                 </View>
                 )}
+
             </View>
+
             <View style={styles.input}>
+
                 <InputText title="Abono realizado" 
                 icono="money" 
                 colorIcono="#000000"
@@ -86,7 +104,9 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                     }
                 }}
                 keyboardType="decimal-pad"
+                readonly={readonly}
                 />
+
                 {errors?.paid_amount?._errors?.[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -94,15 +114,21 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                     </Text>
                 </View>
                 )}
+
             </View>
+
             <View style={styles.outBalanceBox}>
+
                 <OutstandingBalance title="Saldo Pendiente"
                 icono="usd"
                 backgroundColor="#47DDAA25"
                 colorIcono="#000000"
                 value={totalAmount(data.total_cost ?? "0", data.paid_amount ?? "0")}/>
+
             </View>
+
             <View style={styles.inputPM}>
+
                 <DropDownPick title="Forma de pago" icono="credit-card"
                 value={paymentType?.id.toString() || null} 
                 setValue={(item) => {
@@ -120,7 +146,9 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                 items={payTypes}
                 placeholder="Seleccione una opción"
                 zIndex={1050}
+                readonly={readonly}
                 />
+
                 {errors?.payment_method?._errors?.[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -128,12 +156,15 @@ export function StepFinancial({ data, updateData, errors }: PropsStepFinancial){
                     </Text>
                 </View>
                 )}
+
             </View>
+
             <View style={styles.newsContainer}>
                 <NewsBox title="El saldo se calcula automaticamente en base al costo y abonos ingresados" icono="shield"
                 backgroundColor="#47DDAA25"
                 colorIcono="#47DDAA"/>
             </View>
+            
         </ScrollView>
     );
 }

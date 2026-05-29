@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from "react";
-import { Text, TextInput, View, StyleSheet, FlatList, Image } from "react-native";
+import { Text, TextInput, View, StyleSheet, FlatList, Image, Pressable } from "react-native";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { getEvents } from "../services/eventService";
@@ -7,6 +7,7 @@ import { EventListItem, PropsSearchBar, PropsInfoRow } from "../types/Events.typ
 import { useFocusEffect } from "@react-navigation/native";
 import { HeadTitle } from "../components/HeadTitle";
 import { StylesDefault } from "../styles/StylesDefault";
+import { router } from "expo-router";
 
 export function FilterableEventsTable() {
   const [filterText, setFilterText] = useState("");
@@ -90,7 +91,15 @@ function EventsTable({ events }: { events: EventListItem[] }) {
 function EventItem({item}: {item: EventListItem}){
   const eventImage = getEventImage(item.type);
   return(
-    <View style={styles.ItemTable}>
+    <Pressable style={styles.ItemTable}
+    onPress={() => router.push({
+      pathname: "/events/show",
+      params: {
+        id: item.id,
+        name: item.name
+      }
+    })}
+    >
       <Image source={eventImage} style={styles.imageItem} />
       <View style={styles.infoContainer}>
         <Text style={StylesDefault.bodyTextBold}>{item.name}</Text>
@@ -100,7 +109,7 @@ function EventItem({item}: {item: EventListItem}){
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

@@ -10,7 +10,7 @@ interface InputTextProps extends PropsInputText {
     keyboardType?: KeyboardTypeOptions;
 }
 
-export function InputText({title, icono, colorIcono, color, placeholder, value, onChangeText, keyboardType}:InputTextProps){
+export function InputText({title, icono, colorIcono, color, placeholder, value, onChangeText, keyboardType, readonly}:InputTextProps){
     return(
         <View style={styles.inputText}>
             <Text style={[StylesDefault.bodyText, {color}]}>{title}</Text>
@@ -22,13 +22,14 @@ export function InputText({title, icono, colorIcono, color, placeholder, value, 
                     value={value}
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
+                    editable={readonly ? false : true}
                 />
             </View>
         </View>
     );
 }
 
-export function InputTextMultiline({title, icono, colorIcono, color, placeholder, value, onChangeText}:InputTextProps){
+export function InputTextMultiline({title, icono, colorIcono, color, placeholder, value, onChangeText, readonly}:InputTextProps){
     return(
         <View style={styles.inputText}>
             <View style={styles.inputBox}>
@@ -42,7 +43,7 @@ export function InputTextMultiline({title, icono, colorIcono, color, placeholder
                 value={value}
                 onChangeText={onChangeText}
                 textAlignVertical="top"
-
+                editable={readonly ? false : true}
             />
         </View>
     );

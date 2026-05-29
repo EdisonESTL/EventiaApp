@@ -34,20 +34,28 @@ function TableItem({item}: {item: EventStaff}){
                 style={styles.itemImage}
             />
         </View>
+
         <View style={styles.staff}>
-            <Text style={StylesDefault.bodyTextBold}>{item.staff.role}</Text>
+
+            <Text style={StylesDefault.bodyTextBold}>{item.role}</Text>
             <Text style={StylesDefault.bodyText}>{item.staff.name}</Text>
             <Text style={StylesDefault.bodyText}>{item.staff.phone}</Text>
+        
         </View>
+
         <View style={styles.actionContainer}>
+
             <CircleButton icono="call"
              onPress={() => console.log("si se pudo")}
              colorIcono="#ffffff"
-             backgroundColor="#6750A4"/>
+             backgroundColor="#6750A4"
+             />
+
             <CircleButton icono="logo-whatsapp"
              onPress={() => console.log("si se pudo")}
              colorIcono="#ffffff"
              backgroundColor="#25D366"/>
+
         </View>    
     </View>
   );

@@ -5,10 +5,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StylesDefault } from "../styles/StylesDefault";
 
-export function ActionButton({ title, icono, onPress, colorsButton, color}: PropsActionButton) {
+export function ActionButton({ title, icono, onPress, colorsButton, color, readonly}: PropsActionButton) {
   return (
     <View style={styles.container}>
-      <Pressable onPress={onPress}>
+      <Pressable onPress={onPress}
+      disabled={readonly}>
         <LinearGradient 
           colors={colorsButton} 
           style={styles.gradient} 

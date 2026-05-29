@@ -9,7 +9,6 @@ export function StepResume({data, updateData}: PropsStepResume){
     const start = new Date(data.start_datetime || "");
     const end = new Date(data.end_datetime || "");
 
-    console.log("Data en StepResume:", data);
     return(
         <View style={styles.container}>
             <View style={styles.titleContainer}>

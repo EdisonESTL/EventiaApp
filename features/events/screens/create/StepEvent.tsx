@@ -9,7 +9,7 @@ import { DropdownItem, PropsStepEvent } from "../../types/Events.types";
 import { getEventTypes, getPackages } from "../../services/eventService";
 import { StylesDefault } from "../../styles/StylesDefault";
 
-export function StepEvent({ data, updateData, errors }: PropsStepEvent){
+export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent){
     
     const [eventTypes, setEventTypes] = useState<DropdownItem[]>([]);
     const [eventPackages, setEventPackages] = useState<DropdownItem[]>([]);
@@ -138,7 +138,7 @@ export function StepEvent({ data, updateData, errors }: PropsStepEvent){
                 placeholder="Cumpleaños de ....."
                 value={data?.name}
                 onChangeText={(text) => updateData({ name: text })}
-                />
+                readonly={readonly}/>
                 {errors?.name?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -156,7 +156,8 @@ export function StepEvent({ data, updateData, errors }: PropsStepEvent){
                 items={eventTypes}
                 placeholder="Seleccione"
                 zIndex={1000}
-                />
+                readonly={readonly}
+            />
                 {errors?.event_type?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -174,7 +175,8 @@ export function StepEvent({ data, updateData, errors }: PropsStepEvent){
                 items={eventPackages}
                 placeholder="Seleccione"
                 zIndex={999}
-                />
+                readonly={readonly}
+            />
                 {errors?.event_package?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -190,7 +192,8 @@ export function StepEvent({ data, updateData, errors }: PropsStepEvent){
             color="#000000"
             placeholder="Ubicacion......."
             value={data?.location || ''}
-            onChangeText={(text) => updateData({ location: text })}/>
+            onChangeText={(text) => updateData({ location: text })}
+            readonly={readonly}/>
                 {errors?.location?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -206,7 +209,8 @@ export function StepEvent({ data, updateData, errors }: PropsStepEvent){
             value={startDateTime}
             show={showStartDate}
             setShow={setShowStartDate}
-            onChange={onChangeStartDate}/>
+            onChange={onChangeStartDate}
+            readonly={readonly}/>
                 {errors?.start_datetime?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -216,20 +220,25 @@ export function StepEvent({ data, updateData, errors }: PropsStepEvent){
                 )}
             </View>
             <View style={styles.clockSection}>
+
                 <DateTimePick title="Hora inicio"
                 icono="clock"
                 mode="time"
                 value={startDateTime}
                 show={showStartTime}
                 setShow={setShowStartTime}
-                onChange={onChangeStartTime}/>
+                onChange={onChangeStartTime}
+                readonly={readonly}/>
+
                 <DateTimePick title="Hora fin"
                 icono="clock"
                 mode="time"
                 value={endDateTime}
                 show={showEndTime}
                 setShow={setShowEndTime}
-                onChange={onChangeEndTime}/>
+                onChange={onChangeEndTime}
+                readonly={readonly}/>
+                
             </View>
             {errors?.end_datetime?._errors[0] && (
                 <View style={StylesDefault.errors}>

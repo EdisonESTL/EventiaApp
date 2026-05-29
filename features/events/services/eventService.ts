@@ -1,5 +1,16 @@
 import { db } from "../../../database/dataBase";
-import { Event, DropdownItem, EventType, Package, Service, PaymentMethod, ReceiptType, EventListItem, EventEquipment, EventStaff, EventSchedule } from "../types/Events.types";
+import { Event, 
+  DropdownItem, 
+  EventType, 
+  Package, 
+  Service, 
+  PaymentMethod, 
+  ReceiptType, 
+  EventListItem, 
+  EventEquipment, 
+  EventStaff, 
+  EventSchedule, 
+  EventService } from "../types/Events.types";
 
 export const createEvent = (event: Event) => {
   try {
@@ -350,3 +361,278 @@ export const getReceiptTypes = (): ReceiptType[] => {
     return [];
   }
 };
+
+export const getEventById = (id:number): Event | null => {
+  try {
+    const event = db.getFirstSync<any>(`
+      SELECT 
+        id,
+        name,
+        location,
+        start_datetime,
+        end_datetime,
+        description,
+
+        customer_id,
+        event_type_id,
+        package_id,
+
+        total_cost,
+        paid_amount,
+        payment_method_id,
+        receipt_type_id,
+
+        status_type_id
+      FROM events
+      WHERE id = ?
+    `,[id]);
+    
+    if (!event) return null
+    
+    // Obtener cliente
+    const customer = db.getFirstSync(`
+      SELECT *
+      FROM customers
+      WHERE id = ?
+    `, [event.customer_id]);
+
+    // Event Type
+    const eventType = db.getFirstSync(`
+      SELECT *
+      FROM event_types
+      WHERE id = ?
+    `, [event.event_type_id]);
+
+    // Package
+    const eventPackage = db.getFirstSync(`
+      SELECT *
+      FROM packages
+      WHERE id = ?
+    `, [event.package_id]);
+    
+    //Metodo de pago
+    const paymentMethod = db.getFirstSync(`
+        SELECT *
+        FROM payment_methods
+        WHERE id = ?
+      `,[event.payment_method_id])
+
+    //Tipo de recibo
+    const receiptType = db.getFirstSync(`
+        SELECT *
+        FROM receipt_types
+        WHERE id = ?
+    `,[event.receipt_type_id])
+
+    //Estado del evento
+    const eventState = db.getFirstSync(`
+        SELECT *
+        FROM status_types
+        WHERE id = ?
+    `,[event.status_type_id])
+
+    
+
+    // Construir objeto final
+    const fullEvent: Event = {
+
+      ...event,
+
+      event_customer: customer ?? undefined,
+      event_type: eventType ?? undefined,
+      event_package: eventPackage ?? undefined,
+      payment_method: paymentMethod ?? undefined,
+      receipt_type: receiptType ?? undefined,
+      status: eventState ?? undefined,
+
+      services: getServicesByEventId(id),
+      staff: getStaffByEventId(id),
+      equipment: getEquipmentByEventId(id),
+      schedule: getScheduleByEventId(id)
+    };
+
+    return fullEvent; 
+
+  } catch (error) {
+    console.log("Error obteniendo eventos:", error);
+    return null;
+  }
+};
+
+export const getServicesByEventId = (id:number): EventService[] | null => {
+  try {
+    //Servicios del evento
+    const rows = db.getAllSync<{
+      es_id: number;
+      event_id: number;
+      quantity: number;
+      service_id: number;
+      service_name: string; 
+      service_price: string;
+      service_description: string;
+    }>(`
+      SELECT 
+        es.id AS es_id,
+        es.event_id,
+        es.quantity,
+        s.id AS service_id,
+        s.name AS service_name,
+        s.price AS service_price,
+        s.description AS service_description
+      FROM event_services AS es
+      INNER JOIN services AS s ON es.service_id = s.id
+      WHERE es.event_id = ?
+    `, [id]);
+    
+    // 2. Si no hay filas, retornamos null
+     if (!rows || rows.length === 0) return [];
+
+    // 3. Mapeamos la estructura plana de la BD al objeto anidado de tu interfaz
+    const result: EventService[] = rows.map((row) => ({
+
+      id: row.es_id,
+
+      event: row.event_id,
+
+      quantity: row.quantity,
+
+      service: {
+        id: row.service_id,
+        name: row.service_name,
+        price: row.service_price,
+        description: row.service_description
+      }
+
+    }));
+
+    return result;
+
+  } catch (error) {
+    console.log("Error receipt types:", error);
+    return null;
+  }
+}
+
+export const getStaffByEventId = (id:number): EventStaff[] | null => {
+  try {
+    //Servicios del evento
+    const rows = db.getAllSync<{
+      es_id: number;
+      event_id: number;
+      role: string;
+      staff_id: number;
+      staff_name: string; 
+      staff_phone: string;      
+    }>(`
+      SELECT 
+        es.id AS es_id,
+        es.event_id,
+        es.role,
+        
+        s.id AS staff_id,
+        s.name AS staff_name,
+        s.phone AS staff_phone
+      FROM event_staff AS es
+      INNER JOIN staff AS s ON es.staff_id = s.id
+      WHERE es.event_id = ?
+    `, [id]);
+    
+    // 2. Si no hay filas, retornamos null
+     if (!rows || rows.length === 0) return [];
+
+    // 3. Mapeamos la estructura plana de la BD al objeto anidado de tu interfaz
+    const result: EventStaff[] = rows.map((row) => ({
+
+      id: row.es_id,
+
+      event: row.event_id,
+
+      role: row.role,
+
+      staff: {
+        id: row.staff_id,
+        name: row.staff_name,
+        phone: row.staff_phone
+      }
+
+    }));
+
+    return result;
+
+  } catch (error) {
+    console.log("Error receipt types:", error);
+    return null;
+  }
+}
+
+export const getEquipmentByEventId = (id:number): EventEquipment[] | null => {
+  try {
+    //Servicios del evento
+    const rows = db.getAllSync<{
+      ee_id: number;
+      event_id: number;
+      quantity: number;
+      equipment_id: number;
+      equipment_name: string;     
+    }>(`
+      SELECT 
+        ee.id AS ee_id,
+        ee.event_id,
+        ee.quantity,
+        
+        e.id AS equipment_id,
+        e.name AS equipment_name
+      FROM event_equipment AS ee
+      INNER JOIN equipment AS e ON ee.equipment_id = e.id
+      WHERE ee.event_id = ?
+    `, [id]);
+    
+    // 2. Si no hay filas, retornamos null
+     if (!rows || rows.length === 0) return [];
+
+    // 3. Mapeamos la estructura plana de la BD al objeto anidado de tu interfaz
+    const result: EventEquipment[] = rows.map((row) => ({
+
+      id: row.ee_id,
+
+      event: row.event_id,
+
+      quantity: row.quantity,
+
+      equipment: {
+        id: row.equipment_id,
+        name: row.equipment_name,
+        total_quantity: 0,
+        available_quantity: 0,
+      }
+
+    }));
+
+    return result;
+
+  } catch (error) {
+    console.log("Error receipt types:", error);
+    return null;
+  }
+}
+
+export const getScheduleByEventId = (id:number): EventSchedule[] | null => {
+  try {
+    //Servicios del evento
+    const rows = db.getAllSync<EventSchedule>(`
+      SELECT 
+        *
+      FROM event_schedule
+      WHERE event_id = ?
+    `, [id]);
+    
+    // 2. Si no hay filas, retornamos null
+     if (!rows || rows.length === 0) return [];
+
+    return rows;
+
+  } catch (error) {
+    console.log("Error receipt types:", error);
+    return null;
+  }
+}

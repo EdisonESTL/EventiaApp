@@ -10,7 +10,7 @@ import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { InputText } from "../../components/InputText";
 import { ActionButton } from "../../components/ActionButton";
 
-export function StepLogistic({ data, updateData }: PropsStepLogistic){
+export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
     const [staffList, setStaffList] = useState<EventStaff[]>(data.staff || []);
     const [equipmentsList, setEquipmentsList] = useState<EventEquipment[]>(data.equipment || []);
 
@@ -92,30 +92,41 @@ export function StepLogistic({ data, updateData }: PropsStepLogistic){
 
     return(
         <View style={styles.container}>
+
             <View style={styles.title}>
+
                 <HeadTitleDefault color="#000000" 
                 title="Personal asignado"
                 subtitle="Staff que trabajará en el evento"
                 icono="account-group"/>
+
                 <CircleButton icono="add"
                 onPress={() => setShowModal(true)}
                 colorIcono="#ffffff"
-                backgroundColor="#2C2283"/>
+                backgroundColor="#2C2283"
+                readonly={readonly}/>
+
             </View>
 
             <View style={styles.listContainer}>
+
                 <StaffTable staff={staffList}/>
+
             </View>
 
             <View style={styles.title}>
+
                 <HeadTitleDefault color="#000000" 
                 title="Equipos asignados"
                 subtitle="Equipos que se utilizaran en el evento"
                 icono="audio-input-rca"/>
+
                 <CircleButton icono="add"
                 onPress={() => setShowModalEq(true)}
                 colorIcono="#ffffff"
-                backgroundColor="#2C2283"/>
+                backgroundColor="#2C2283"
+                readonly={readonly}/>
+
             </View>
 
             <View style={styles.listContainer}>

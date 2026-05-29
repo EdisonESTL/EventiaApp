@@ -4,6 +4,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { PropsDropDownPick } from "../types/Events.types";
 import { StylesDefault } from "../styles/StylesDefault";
+import { readonly } from 'zod';
 
 export function DropDownPick({
   title,
@@ -12,7 +13,8 @@ export function DropDownPick({
   setValue,
   items,
   placeholder,
-  zIndex
+  zIndex,
+  readonly
 }:PropsDropDownPick){
     //-------------  Picker Tipo de Evento   ------------------
   const [open, setOpen] = useState(false);
@@ -24,7 +26,7 @@ export function DropDownPick({
     <View style={styles.inputTextDefault}>
       <AntDesign name={icono} size={20} color="black" />      
         <DropDownPicker
-        open={open}
+        open={readonly ? false : open}
         value={value}
         items={items}
         setOpen={setOpen}
@@ -36,6 +38,7 @@ export function DropDownPick({
         listMode="SCROLLVIEW"
         style={styles.dropdown}
         dropDownContainerStyle={styles.dropdown}
+        disabled= {readonly}
         />      
     </View>
   </View>

@@ -34,6 +34,11 @@ export interface ReceiptType{
   ico: keyof typeof MaterialCommunityIcons.glyphMap;
 }
 
+export interface StatusType{
+  id: number;
+  name: string;
+}
+
 export interface Event{
   id?: number;
   name: string;
@@ -52,7 +57,7 @@ export interface Event{
   receipt_type: ReceiptType;
 
   deleted: number;
-  
+  status: StatusType; 
   services: EventService[];
   schedule: EventSchedule[];
   staff: EventStaff[];
@@ -165,6 +170,7 @@ export type PropsActionButton={
   onPress: () => void;
   colorsButton: [string, string, string];
   color: string;
+  readonly?: boolean | true;
 }
 
 //Para CustomHeader 
@@ -176,8 +182,6 @@ export type PropsCustomHeader = {
   title: string;
   subtitle: string;
   colors: [string, string, string];
-  color: string;
-  colorIcono: string;
 };
 
 //Para CircleButton
@@ -186,6 +190,7 @@ export type PropsCircleButton ={
   onPress: () => void;
   colorIcono: string;
   backgroundColor: string;
+  readonly?: boolean;
 }
 
 //Para HeadTitleDefault
@@ -210,6 +215,7 @@ export type PropsInputText={
   colorIcono: string;
   color: string;
   placeholder: string;
+  readonly: boolean | true;
 }
 
 // Para DropDownPick
@@ -221,6 +227,7 @@ export type PropsDropDownPick={
   items: DropdownItem[];
   placeholder: string;
   zIndex: number;
+  readonly:boolean;
 }
 
 //Para DateTimePick
@@ -230,6 +237,7 @@ export type PropDateTimePick={
   mode: "date" | "time";
   value: Date;
   show: boolean;
+  readonly: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   onChange: (event: DateTimePickerEvent, selectedDate?: Date) => void;
 }
@@ -253,6 +261,7 @@ export type PropsVoucherOption = {
   title: string;
   icono: keyof typeof MaterialCommunityIcons.glyphMap;
   selected: boolean;
+  readonly: boolean;
   onPress: () => void;
 };
 
@@ -291,6 +300,7 @@ export type PropsStepClient = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
   errors: any;
+  readonly: boolean;
 }
 
 //Para Step Event
@@ -298,6 +308,7 @@ export type PropsStepEvent = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
   errors: any;
+  readonly: boolean;
 }
 
 //Para Step Services
@@ -305,6 +316,7 @@ export type PropsStepServices = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
   errors: any;
+  readonly: boolean;
 }
 
 //Para Step Financial
@@ -312,28 +324,40 @@ export type PropsStepFinancial = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
   errors: any;
+  readonly: boolean;
 }
 
 //Para VoucherSelector
 export type PropsVoucherSelector = {
   valueSelected: string;
   updateData: (data: Partial<Event>) => void;
+  readonly: boolean;
 }
 
 //Para SepLogistic
 export type PropsStepLogistic = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
+  readonly: boolean;
 }
 
 //Para Step Schedule
 export type PropsStepSchedule = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
+  readonly: boolean;
 }
 
 //Para Step Resume
 export type PropsStepResume = {
   data: Partial<Event>;
   updateData: (data: Partial<Event>) => void;
+}
+
+//Props de EventForm
+export type PropsEventForm = {
+  initialData?: Partial<Event>;
+  mode: "create" | "edit" | "view";
+  onSubmit: (event: Event) => void;
+  titleText: string;
 }
