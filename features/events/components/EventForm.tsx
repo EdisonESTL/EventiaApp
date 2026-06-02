@@ -16,7 +16,15 @@ import { eventSchema } from "@/features/events/schemas/event.schema";
 import { serviceSchema } from "@/features/events/schemas/service.schema";
 import { financialSchema } from "@/features/events/schemas/financial.schema";
 
-export default function EventForm({initialData, mode, onSubmit, titleText}: PropsEventForm){
+export default function EventForm({
+    initialData, 
+    mode, 
+    onSubmit, 
+    titleText,
+    onEdit,
+    onDelete,
+    }: PropsEventForm){
+
     const [step, setStep] = useState(1);
     const readonly = mode === "view";
     //Estado para errores
@@ -102,9 +110,14 @@ export default function EventForm({initialData, mode, onSubmit, titleText}: Prop
                 onBack={() => router.back()} 
                 icono2="save"
                 onSave={() => onSubmit(newEvent as Event)}
+                icono3="trash"
+                onDelete={onDelete}
+                icono4="pencil"
+                onEdit={onEdit}
                 title={titleText}
                 subtitle={`Paso ${step} de 7`}
                 colors={['#47E7AF', '#47817F', '#7E258E']}
+                readonly={readonly}
             />
             </View>
             <KeyboardAvoidingView 
@@ -145,12 +158,14 @@ export default function EventForm({initialData, mode, onSubmit, titleText}: Prop
                         color="#ffffff"/> 
 
                         :
-
-                        <ActionButton title="Guardar"
-                        icono="save"
-                        onPress={() => onSubmit(newEvent as Event)}
-                        colorsButton={["#47E7AF", "#7E258E", "#7E258E"]}
-                        color="#ffffff"/>
+                        (
+                            !readonly && <ActionButton title="Guardar"
+                            icono="save"
+                            onPress={() => onSubmit(newEvent as Event)}
+                            colorsButton={["#47E7AF", "#7E258E", "#7E258E"]}
+                            color="#ffffff"/>
+                        )
+                        
                     }
                     
                 </View>

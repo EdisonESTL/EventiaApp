@@ -179,9 +179,14 @@ export type PropsCustomHeader = {
   onBack: () => void;
   icono2: keyof typeof Ionicons.glyphMap;
   onSave: () => void;
+  icono3?: keyof typeof Ionicons.glyphMap;
+  onDelete?: () => void;
+  icono4?: keyof typeof Ionicons.glyphMap;
+  onEdit?: () => void;
   title: string;
   subtitle: string;
   colors: [string, string, string];
+  readonly?: boolean;
 };
 
 //Para CircleButton
@@ -359,5 +364,7 @@ export type PropsEventForm = {
   initialData?: Partial<Event>;
   mode: "create" | "edit" | "view";
   onSubmit: (event: Event) => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   titleText: string;
 }

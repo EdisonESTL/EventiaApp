@@ -1,30 +1,47 @@
 import EventForm from "@/features/events/components/EventForm";
-import { getEventById } from "@/features/events/services/eventService";
-import { useLocalSearchParams } from "expo-router";
-import React from "react";  
+import { deleteEvent, getEventById, updateEvent } from "@/features/events/services/eventService";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";  
 import { Event } from "@/features/events/types/Events.types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 
 export default function Show(){
 
+   const [mode, setMode] = useState<"view" | "edit">("view");
+   
    const { id } = useLocalSearchParams();
 
    const event = getEventById(Number(id));
 
    const handleUpdate = (event: Event) => {
-      //updateEvent(updatedEvent);
-      console.log("llegamos a actualizar")
+      updateEvent(event);
+      setMode("edit");
+      alert("Evento actualizado correctamente");
+      router.push("/");
    }
 
+   const handleDelete = (id: number) => {
+      deleteEvent(id);
+      alert("Evento eliminado correctamente");
+      router.push("/");
+   }
+
+   const handleEdit = (id: number) => {
+      //router.push(`/events/edit/${id}`);
+      setMode("edit");
+      console.log("llegamos a editar")
+   }
    return(
       <SafeAreaView style={styles.container}>
 
          <EventForm
-            mode="view"
-            titleText="Evento"
+            mode={mode}
+            titleText={mode === "view" ? "Ver Evento" : "Editar Evento"}
             initialData={event ?? {}}
             onSubmit={handleUpdate}
+            onDelete={() => handleDelete(Number(id))}
+            onEdit={() => handleEdit(Number(id))}
          />
 
       </SafeAreaView>

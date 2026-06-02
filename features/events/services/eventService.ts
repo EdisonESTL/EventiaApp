@@ -30,6 +30,10 @@ export const createEvent = (event: Event) => {
       addScheduleToEvent(eventID, event.schedule)
     }
 
+    if(event.services?.length > 0){
+      addServicesToEvent(eventID, event.services)
+    }
+
     db.execSync("COMMIT");
 
     console.log("Evento guardado correctamente");
@@ -117,19 +121,6 @@ export const createEventBase = (event: Event): number => {
 
     const eventId = Number(result.lastInsertRowId);
 
-    //3 services
-    event.services.forEach((s) => {
-        db.runSync(
-            `INSERT INTO event_services (event_id, service_id, quantity)
-            VALUES (?, ?, ?)`,
-            [
-            eventId,
-            s.service.id, // ID del servicio seleccionado
-            s.quantity
-            ]
-        );
-    });
-
     console.log("Evento guardado correctamente");
 
     return Number(eventId);
@@ -139,6 +130,58 @@ export const createEventBase = (event: Event): number => {
     throw error;
   }
 }
+
+export const addServicesToEvent = (
+  eventId: number,
+  ServiceList: EventService[]
+) => {
+
+  try {
+    ServiceList.forEach((s) => {
+
+      let service = db.getFirstSync<{id:number}>(
+        `SELECT id FROM services WHERE name = ?`,
+        [s.service.name]
+      );
+
+      let serviceId:number;
+
+      if(!service){
+
+        const insert = db.runSync(
+          `INSERT INTO services
+          (name, description, price)
+          VALUES (?, ?, ?)`,
+          [
+            s.service.name,
+            s.service.description,
+            s.service.price
+          ]
+        );
+
+        serviceId = Number(insert.lastInsertRowId);
+
+      } else {
+
+        serviceId = service.id;
+      }
+
+      db.runSync(
+        `INSERT INTO event_services
+        (event_id, service_id, quantity)
+        VALUES (?, ?, ?)`,
+        [
+          eventId,
+          serviceId,
+          s.quantity
+        ]
+      );
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const addEquipmentToEvent = (
   eventId: number,
@@ -634,5 +677,99 @@ export const getScheduleByEventId = (id:number): EventSchedule[] | null => {
   } catch (error) {
     console.log("Error receipt types:", error);
     return null;
+  }
+}
+
+export const deleteEvent = (id:number) => {
+  try {
+    db.runSync(`
+      UPDATE events
+      SET deleted = 1
+      WHERE id = ?
+    `, [id]);
+    console.log("Evento eliminado correctamente");
+  } catch (error) {
+    console.log("Error al eliminar evento:", error);
+  }
+};
+
+export const updateEvent = (event: Event) => {
+
+  if (event.id === undefined) {
+    throw new Error("No se puede actualizar un evento sin ID");
+  }
+
+  try {
+
+    db.execSync("BEGIN TRANSACTION");
+
+    db.runSync(
+      `UPDATE events
+       SET
+          name = ?,
+          location = ?,
+          start_datetime = ?,
+          end_datetime = ?,
+          description = ?,
+          total_cost = ?,
+          paid_amount = ?,
+          event_type_id = ?,
+          package_id = ?,
+          payment_method_id = ?,
+          receipt_type_id = ?,
+          status_type_id = ?
+
+       WHERE id = ?`,
+      [
+        event.name,
+        event.location,
+        event.start_datetime,
+        event.end_datetime,
+        event.description,
+        parseFloat(event.total_cost),
+        parseFloat(event.paid_amount),
+        event.event_type.id,
+        event.event_package.id,
+        event.payment_method.id,
+        event.receipt_type.id,
+        event.status.id,
+        event.id
+      ]
+    );
+
+    // eliminar relaciones actuales
+    db.runSync(
+      `DELETE FROM event_services WHERE event_id = ?`,
+      [event.id]
+    );
+
+    db.runSync(
+      `DELETE FROM event_equipment WHERE event_id = ?`,
+      [event.id]
+    );
+
+    db.runSync(
+      `DELETE FROM event_staff WHERE event_id = ?`,
+      [event.id]
+    );
+
+    db.runSync(
+      `DELETE FROM event_schedule WHERE event_id = ?`,
+      [event.id]
+    );
+
+    // insertar nuevamente
+    addServicesToEvent(event.id, event.services);
+    addEquipmentToEvent(event.id, event.equipment);
+    addStaffToEvent(event.id, event.staff);
+    addScheduleToEvent(event.id, event.schedule);
+
+    db.execSync("COMMIT");
+
+  } catch (error) {
+
+    db.execSync("ROLLBACK");
+
+    throw error;
   }
 }
