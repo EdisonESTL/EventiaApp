@@ -293,6 +293,9 @@ export type PropsEquipmentTable = {
 //Para Staff table
 export type PropsStaffTable = {
   staff: EventStaff[]; 
+  onEdit: (staff: EventStaff) => void;
+  onDelete: (id: number) => void;
+  readonly: boolean;
 };
 
 //Para ScheduleList

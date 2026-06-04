@@ -4,6 +4,7 @@ import { StylesDefault } from "../styles/StylesDefault";
 import {PropsEquipmentTable, EventEquipment} from "../types/Events.types"
 import { CircleButton } from "./CircleButton";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Colors } from "../constants/colors";
 
 export function EquipmentsTable({ equipments }: PropsEquipmentTable){
     return(
@@ -40,7 +41,8 @@ function TableItem({item}: {item: EventEquipment}){
             <CircleButton icono="trash"
              onPress={() => console.log("si se pudo")}
              colorIcono="#ffffff"
-             backgroundColor="#9e1243"/>
+             backgroundColor={Colors.delete}
+             />
         </View>    
     </View>
   );

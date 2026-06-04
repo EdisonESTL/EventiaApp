@@ -28,9 +28,9 @@ export default function Show(){
    }
 
    const handleEdit = (id: number) => {
-      //router.push(`/events/edit/${id}`);
+
       setMode("edit");
-      console.log("llegamos a editar")
+      
    }
    return(
       <SafeAreaView style={styles.container}>

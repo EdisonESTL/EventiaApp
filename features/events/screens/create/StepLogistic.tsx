@@ -19,6 +19,7 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
     
     // Estados para el formulario de staff
     const [staffForm, setStaffForm] = useState({
+        id: 0,
         role: '',
         name: '',
         phone: ''
@@ -28,9 +29,24 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
         quantity: ''
     });
 
+    //Funciones para manejar el staff
     const handleSaveStaff = () => {
+        
         if (staffForm.role.trim() && staffForm.name.trim() && staffForm.phone.trim()) {
-            const newStaff: EventStaff = {
+           if (staffForm.id === 0) {
+                createStaff();
+            } else {
+                updateStaff();
+            }
+        } else {
+            alert('Por favor completa todos los campos');
+            return;
+        }
+        
+    };
+    const createStaff = () => {
+        
+         const newStaff: EventStaff = {
                 id: Date.now(),
                 event: 0, // Este valor se asignaría al guardar el evento completo
                 staff: {
@@ -42,16 +58,61 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
             };
             setStaffList([...staffList, newStaff]);
             // Limpiar formulario
-            setStaffForm({ role: '', name: '', phone: '' });
+            setStaffForm({ id: 0, role: '', name: '', phone: '' });
 
             updateData({
                 staff: [...staffList, newStaff]
             });
+
             setShowModal(false);
-        } else {
-            alert('Por favor completa todos los campos');
-        }
-    };
+    }
+
+    const handleEditStaff = (staff: EventStaff) => {
+
+        setStaffForm({
+            id: staff.id || 0,
+            role: staff.role,
+            name: staff.staff.name,
+            phone: staff.staff.phone
+        });
+
+        //handleSaveStaff();
+
+        setShowModal(true);
+    }
+
+    const updateStaff = () => {
+        
+        const updatedList = staffList.map(item =>
+            item.id === staffForm.id
+                ? {
+                    ...item,
+                    role: staffForm.role,
+                    staff: {
+                        ...item.staff,
+                        name: staffForm.name,
+                        phone: staffForm.phone
+                    }
+                }
+                : item
+        );
+
+        setStaffList(updatedList);
+
+        updateData({
+            staff: updatedList
+        });
+
+        setShowModal(false);
+    }
+
+    const handleDeleteStaff = (id: number) => {
+        const updatedList = staffList.filter(staff => staff.id !== id);
+        setStaffList(updatedList);
+        updateData({
+            staff: updatedList
+        });
+    }
 
     const handleSaveEquipment = () => {
         if (equipmentForm.name.trim() && equipmentForm.quantity.trim()) {
@@ -79,9 +140,9 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
         }
     };           
 
-
+    //funciones para el modal
     const handleCloseStaffModal = () => {
-        setStaffForm({ role: '', name: '', phone: '' });
+        setStaffForm({ id: 0, role: '', name: '', phone: '' });
         setShowModal(false);
     };
 
@@ -110,7 +171,11 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
 
             <View style={styles.listContainer}>
 
-                <StaffTable staff={staffList}/>
+                <StaffTable staff={staffList} 
+                onEdit={handleEditStaff} 
+                onDelete={handleDeleteStaff}
+                readonly={readonly}
+                />
 
             </View>
 
@@ -163,28 +228,39 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                                          />
                                      </Pressable>
                                  </View>
+
                                  <View style={styles.modalInputContainer}>
+
                                      <InputText title="Rol del staff"
                                      icono="briefcase"
                                      colorIcono="#000000"
                                      color="#000000"
                                      placeholder="Rol del staff"
                                      value={staffForm.role}
-                                     onChangeText={(text) => setStaffForm({...staffForm, role: text})}/>
+                                     onChangeText={(text) => setStaffForm({...staffForm, role: text})}
+                                     readonly={readonly}
+                                     />
+
                                      <InputText title="Nombre"
                                      icono="user-circle"
                                      colorIcono="#000000"
                                      color="#000000"
                                      placeholder="Nombre Completo"
                                      value={staffForm.name}
-                                     onChangeText={(text) => setStaffForm({...staffForm, name: text})}/>                            
+                                     onChangeText={(text) => setStaffForm({...staffForm, name: text})}
+                                     readonly={readonly}
+                                     /> 
+
                                      <InputText title="Teléfono"
                                      icono="phone"
                                      colorIcono="#000000"
                                      color="#000000"
                                      placeholder="Número de teléfono"
                                      value={staffForm.phone}
-                                     onChangeText={(text) => setStaffForm({...staffForm, phone: text})}/>
+                                     onChangeText={(text) => setStaffForm({...staffForm, phone: text})}
+                                     readonly={readonly}
+                                     />
+                                 
                                  </View>
                              </ScrollView>
                              <View style={styles.modalButtons}>
@@ -197,7 +273,9 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                                  icono="save"
                                  onPress={handleSaveStaff}
                                  colorsButton={["#541360","#AE27C6","#AE27C6"]}
-                                 color="#ffffff"/>                            
+                                 color="#ffffff"
+                                 readonly={readonly}
+                                 />                            
                              </View>
                          </View>
                      </View>
@@ -241,14 +319,18 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                                     color="#000000"
                                     placeholder="Nombre del equipo "
                                     value={equipmentForm.name}
-                                    onChangeText={(text) => setEquipmentForm({...equipmentForm, name: text})}/>
+                                    onChangeText={(text) => setEquipmentForm({...equipmentForm, name: text})}
+                                    readonly={readonly}
+                                    />
                                     <InputText title="Cantidad"
                                     icono="list-ol"
                                     colorIcono="#000000"
                                     color="#000000"
                                     placeholder="Cantidad"
                                     value={equipmentForm.quantity}
-                                    onChangeText={(text) => setEquipmentForm({...equipmentForm, quantity: text})}/>
+                                    onChangeText={(text) => setEquipmentForm({...equipmentForm, quantity: text})}
+                                    readonly={readonly}
+                                    />
                                 </View>
                             </ScrollView>
                             <View style={styles.modalButtons}>

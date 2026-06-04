@@ -1,16 +1,29 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image, Pressable } from "react-native";
 import { StylesDefault } from "../styles/StylesDefault";
 import {EventStaff, PropsStaffTable} from "../types/Events.types"
 import { CircleButton } from "./CircleButton";
+import { Colors } from "../constants/colors";
 
-export function StaffTable({ staff }: PropsStaffTable){
+export function StaffTable({ 
+    staff, 
+    onEdit, 
+    onDelete,
+    readonly
+ }: PropsStaffTable){
+
     return(
         <View style={styles.ContainerTable}>
             <FlatList
             data={staff}
-            keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
-            renderItem={({ item }) => <TableItem item={item} />}
+            keyExtractor={(item, index) => item.id?.toString() || index.toString()}
+            renderItem={({ item }) => 
+            <TableItem 
+            item={item} 
+            onEdit={onEdit} 
+            onDelete={onDelete} 
+            readonly={readonly}/>}
+
             ListHeaderComponent={<Text style={StylesDefault.bodyTextBold}>Lista de staff</Text>}
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             ListEmptyComponent={
@@ -25,9 +38,20 @@ export function StaffTable({ staff }: PropsStaffTable){
     );
 }
 
-function TableItem({item}: {item: EventStaff}){
+function TableItem({
+    item, 
+    onEdit, 
+    onDelete,
+    readonly
+}: 
+{
+    item: EventStaff, 
+    onEdit: (staff: EventStaff) => void, 
+    onDelete: (id: number) => void,
+    readonly: boolean
+}){
   return(
-    <View style={styles.itemContainer}>
+    <Pressable style={styles.itemContainer}>
         <View style={styles.itemImageContainer}>
             <Image
                 source={require('../../../assets/images/user-staff.png')}
@@ -44,20 +68,24 @@ function TableItem({item}: {item: EventStaff}){
         </View>
 
         <View style={styles.actionContainer}>
-
-            <CircleButton icono="call"
-             onPress={() => console.log("si se pudo")}
-             colorIcono="#ffffff"
-             backgroundColor="#6750A4"
-             />
-
-            <CircleButton icono="logo-whatsapp"
-             onPress={() => console.log("si se pudo")}
-             colorIcono="#ffffff"
-             backgroundColor="#25D366"/>
+            {!readonly &&
+                <CircleButton icono="pencil"
+                onPress={() => onEdit(item)}
+                colorIcono="#ffffff"
+                backgroundColor={Colors.secondary}
+                readonly={readonly}/>
+            }
+            
+            {!readonly && 
+                <CircleButton icono="trash"
+                onPress={() => onDelete(item.id!)}
+                colorIcono="#ffffff"
+                backgroundColor={Colors.delete}
+                readonly={readonly}/>
+            }
 
         </View>    
-    </View>
+    </Pressable>
   );
 }
 

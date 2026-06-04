@@ -10,7 +10,16 @@ interface InputTextProps extends PropsInputText {
     keyboardType?: KeyboardTypeOptions;
 }
 
-export function InputText({title, icono, colorIcono, color, placeholder, value, onChangeText, keyboardType, readonly}:InputTextProps){
+export function InputText({
+    title, 
+    icono, 
+    colorIcono, 
+    color, 
+    placeholder, 
+    value, 
+    onChangeText, 
+    keyboardType, 
+    readonly}:InputTextProps){
     return(
         <View style={styles.inputText}>
             <Text style={[StylesDefault.bodyText, {color}]}>{title}</Text>
