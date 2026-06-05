@@ -2,14 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { StylesDefault } from "../styles/StylesDefault";
 import {EventService, PropsServicesTable} from "../types/Events.types"
+import { Colors } from "../constants/colors";
+import { CircleButton } from "./CircleButton";
 
-export function ServicesTable({ services}: PropsServicesTable){
+export function ServicesTable({ services, onDelete, readonly }: PropsServicesTable){
     return(
         <View style={styles.ContainerTable}>
             <FlatList
             data={services}
             keyExtractor={(item) => item.service.id.toString()}
-            renderItem={({ item }) => <TableItem item={item} />}
+            renderItem={({ item }) => <TableItem item={item} onDelete={onDelete} readonly={readonly} />}
             ListHeaderComponent={<Text style={StylesDefault.bodyTextBold}>Lista de servicios</Text>}
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             ListEmptyComponent={
@@ -24,18 +26,38 @@ export function ServicesTable({ services}: PropsServicesTable){
     );
 }
 
-function TableItem({item}: {item: EventService}){
-  return(
-    <View style={styles.itemContainer}>
-        <View style={styles.itemResume}>
-            <Text style={StylesDefault.bodyTextBold}>{item.service.name}</Text>
-            <Text style={StylesDefault.bodyText}>{item.service.description}</Text>
-        </View>
-        <View style={styles.itemValue}>
-            <Text style={StylesDefault.bodyTextBold}>{item.service.price}</Text>
-        </View>    
-    </View>
-  );
+function TableItem({item, onDelete, readonly}: 
+    {
+        item: EventService; 
+        onDelete: (id: number) => void; 
+        readonly: boolean
+    }){
+        return(
+            <View style={styles.itemContainer}>
+
+                <View style={styles.itemResume}>
+
+                    <Text style={StylesDefault.bodyTextBold}>{item.service.name}</Text>
+                    
+                    <Text style={StylesDefault.bodyText}>{item.service.description}</Text>
+                
+                </View>
+
+                <View style={styles.itemValue}>
+
+                    <Text style={StylesDefault.bodyTextBold}>{item.service.price}</Text>
+               
+                </View>
+
+                {!readonly && 
+                    <CircleButton icono="trash"
+                    onPress={() => onDelete(item.id!)}
+                    colorIcono="#ffffff"
+                    backgroundColor={Colors.delete}
+                    readonly={readonly}/>
+                }    
+            </View>
+        );
 }
 
 const styles = StyleSheet.create({

@@ -57,6 +57,7 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                 role: staffForm.role,
             };
             setStaffList([...staffList, newStaff]);
+            
             // Limpiar formulario
             setStaffForm({ id: 0, role: '', name: '', phone: '' });
 
@@ -75,8 +76,6 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
             name: staff.staff.name,
             phone: staff.staff.phone
         });
-
-        //handleSaveStaff();
 
         setShowModal(true);
     }
@@ -138,7 +137,15 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
         } else {
             alert('Por favor completa todos los campos');
         }
-    };           
+    };    
+    
+    const handleDeleteEquipment = (id: number) => {
+        const updatedList = equipmentsList.filter(equipment => equipment.id !== id);
+        setEquipmentsList(updatedList);
+        updateData({
+            equipment: updatedList
+        });
+    }
 
     //funciones para el modal
     const handleCloseStaffModal = () => {
@@ -185,7 +192,7 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                 title="Equipos asignados"
                 subtitle="Equipos que se utilizaran en el evento"
                 icono="audio-input-rca"/>
-
+                
                 <CircleButton icono="add"
                 onPress={() => setShowModalEq(true)}
                 colorIcono="#ffffff"
@@ -195,7 +202,11 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
             </View>
 
             <View style={styles.listContainer}>
-                <EquipmentsTable equipments={equipmentsList}/>
+                <EquipmentsTable 
+                equipments={equipmentsList}
+                onDelete={handleDeleteEquipment}
+                readonly={readonly}
+                />
             </View>
 
            { /* quí iría modal para ingresar el Staff */}

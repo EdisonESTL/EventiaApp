@@ -259,6 +259,8 @@ export type PropsResumeServices={
 //Para Services Table
 export type PropsServicesTable = {
   services: EventService[],
+  onDelete: (id: number) => void;
+  readonly: boolean;
 };
 
 //Para Voucher Selector
@@ -288,6 +290,8 @@ export type PropsOutstandingBalance={
 //Para equipment table
 export type PropsEquipmentTable = {
   equipments: EventEquipment[]; 
+  onDelete: (id: number) => void;
+  readonly: boolean;
 };
 
 //Para Staff table
@@ -301,6 +305,9 @@ export type PropsStaffTable = {
 //Para ScheduleList
 export type PropsScheduleList = {
   schedules: EventSchedule[];
+  onDelete: (id: number) => void;
+  onEdit: (schedule: EventSchedule) => void;
+  readonly: boolean;
 }
 
 //Para Step Client

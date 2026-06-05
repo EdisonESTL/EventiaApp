@@ -53,6 +53,24 @@ export function StepSchedule({ data, updateData, readonly }: PropsStepSchedule){
         setShowModal(false);
     }
 
+    const handleDeleteActivity = (id: number) => {
+        const updatedList = scheduleList.filter(activity => activity.id !== id);
+        setScheduleList(updatedList);
+        updateData({
+            schedule: updatedList
+        });
+    }
+
+    const handleEditActivity = (updatedSchedule: EventSchedule) => {
+        const updatedList = scheduleList.map(activity => 
+            activity.id === updatedSchedule.id ? updatedSchedule : activity
+        );
+        setScheduleList(updatedList);
+        updateData({
+            schedule: updatedList
+        });
+    }
+
     return(
         <View style={styles.container}>
 
@@ -72,7 +90,11 @@ export function StepSchedule({ data, updateData, readonly }: PropsStepSchedule){
 
             <ScrollView style={styles.listContainer}>
 
-                <ScheduleList schedules={scheduleList}/>
+                <ScheduleList schedules={scheduleList}
+                onDelete={handleDeleteActivity}
+                onEdit={handleEditActivity}
+                readonly={readonly}
+                />
 
             </ScrollView>
 

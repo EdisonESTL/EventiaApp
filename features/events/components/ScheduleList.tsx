@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   FlatList
 } from "react-native";
+import { EventSchedule, PropsScheduleList } from "../types/Events.types";
+import { Colors } from "../constants/colors";
+import { CircleButton } from "./CircleButton";
+import { StylesDefault } from "../styles/StylesDefault";
 
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { PropsScheduleList } from "../types/Events.types";
 
-
-export function ScheduleList({ schedules}: PropsScheduleList) {
+export function ScheduleList({ schedules, onDelete, onEdit, readonly }: PropsScheduleList) {
   // Convierte "4 pm" -> minutos
   const convertToMinutes = (time: string) => {
     const clean = time.trim().toLowerCase();
@@ -48,16 +49,39 @@ export function ScheduleList({ schedules}: PropsScheduleList) {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}
       style={styles.list}
-      renderItem={({ item: schedule, index }) => {
+      renderItem={({ item, index }) => (
+        <ScheduleItem
+          schedule={item}
+          onDelete={onDelete}
+          onEdit={onEdit}
+          readonly={readonly}
+          index={index}
+          lenghtSchedule={sortedSchedules.length}
+        />
+      )}
+      scrollEnabled={false}
+      nestedScrollEnabled={true}
+    />
+  );
+}
 
-        const isFirst = index === 0;
-        const isLast = index === sortedSchedules.length - 1;
-
-        return (
-          <View style={styles.wrapper}>
-
-            {/* Timeline */}
-            <View style={styles.timelineContainer}>
+function ScheduleItem({ schedule, onDelete, onEdit, readonly, lenghtSchedule, index }: 
+  { 
+    schedule: EventSchedule; 
+    onDelete: (id: number) => void; 
+    onEdit: (schedule: EventSchedule) => void; 
+    readonly: boolean,
+    index: number,
+    lenghtSchedule: number
+  })
+  {
+    const isFirst = index === 0;
+    const isLast = index === lenghtSchedule - 1;
+  
+    return (
+      <View style={styles.wrapper}>
+        {/* Timeline */}
+        <View style={styles.timelineContainer}>
 
               {/* Línea superior */}
               {!isFirst && (
@@ -72,46 +96,57 @@ export function ScheduleList({ schedules}: PropsScheduleList) {
                 <View style={styles.bottomLine} />
               )}
 
-            </View>
+        
+        </View>
 
-            {/* Card */}
-            <View style={styles.card}>
+        {/* Card */}
+        <View style={styles.card}>
 
               {/* Horas */}
               <View style={styles.hourContainer}>
-                <Text style={styles.hour}>
+                <Text style={StylesDefault.subTextBold}>
                   {schedule.start_time}
                 </Text>
 
-                <Text style={styles.hour}>
+                <Text style={StylesDefault.subTextBold}>
                   {schedule.end_time}
                 </Text>
               </View>
 
               {/* Título */}
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>
+                <Text style={StylesDefault.bodyText}>
                   {schedule.title}
                 </Text>
               </View>
 
-              {/* Menú */}
-              <TouchableOpacity>
-                <Ionicons
-                  name="ellipsis-vertical"
-                  size={20}
-                  color="#666"
-                />
-              </TouchableOpacity>
+              <View style={styles.bottomsContainer}>
 
+                {/* Editar */}
+                <TouchableOpacity>
+                  {!readonly && (
+                    <CircleButton icono="pencil"
+                    onPress={() => onEdit(schedule)}
+                    colorIcono="#ffffff"
+                    backgroundColor={Colors.primary}
+                    />
+                  )}
+                </TouchableOpacity>
+
+                {/* Eliminar */}
+                <TouchableOpacity>
+                  {!readonly && (
+                    <CircleButton icono="trash"
+                    onPress={() => onDelete(schedule.id!)}
+                    colorIcono="#ffffff"
+                    backgroundColor={Colors.delete}
+                    />
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        );
-      }}
-      scrollEnabled={false}
-      nestedScrollEnabled={true}
-    />
-  );
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -126,11 +161,11 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: "row",
     alignItems: "stretch",
-    marginBottom: 20,
+    marginBottom: 0,
   },
 
   timelineContainer: {
-    width: 40,
+    width: 20,
     alignItems: "center",
     position: "relative",
   },
@@ -139,7 +174,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     width: 2,
-    height: "50%",
+    height: 100,
     backgroundColor: "#D9D9D9",
   },
 
@@ -147,18 +182,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: 2,
-    height: "50%",
+    height: 100,
     backgroundColor: "#D9D9D9",
   },
 
   circle: {
-    width: 22,
-    height: 22,
+    width: 13,
+    height: 13,
     borderRadius: 11,
     borderWidth: 2,
-    borderColor: "#555",
+    borderColor: Colors.gray500,
     backgroundColor: "#FFF",
-    marginTop: 25,
+    marginTop: 30,
     zIndex: 2,
   },
 
@@ -170,8 +205,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E5E5E5",
 
-    paddingVertical: 18,
+    paddingVertical: 16,
     paddingHorizontal: 16,
+
+    marginVertical: 3,
 
     flexDirection: "row",
     alignItems: "center",
@@ -180,17 +217,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 5,
     elevation: 2,
+
+    gap: 5,
   },
 
   hourContainer: {
-    marginRight: 18,
+    marginRight: 15,
     gap: 8,
-  },
-
-  hour: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#333",
   },
 
   titleContainer: {
@@ -198,9 +231,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  title: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#222",
+  bottomsContainer: {
+    flexDirection: "row",
+    gap: 8,
   },
 });

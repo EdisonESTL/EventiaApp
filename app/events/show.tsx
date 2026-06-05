@@ -18,7 +18,7 @@ export default function Show(){
       updateEvent(event);
       setMode("edit");
       alert("Evento actualizado correctamente");
-      router.push("/");
+      setMode("view");
    }
 
    const handleDelete = (id: number) => {

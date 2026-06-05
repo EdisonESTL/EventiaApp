@@ -9,7 +9,7 @@ import { ServicesTable } from "../../components/ServicesTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getServices } from "../../services/eventService";
 
-export function StepServices({ data, updateData, errors }: PropsStepServices){
+export function StepServices({ data, updateData, errors, readonly }: PropsStepServices){
     
     const [availableServices, setAvailableServices] = useState<Service[]>([]);
 
@@ -33,6 +33,13 @@ export function StepServices({ data, updateData, errors }: PropsStepServices){
         });
 
         setShowModal(false);
+    }
+
+    function deleteService(id: number) {
+        const updatedServices = (data.services || []).filter(service => service.id !== id);
+        updateData({
+            services: updatedServices,
+        });
     }
 
     const totalCost = (data.services || []).reduce(
@@ -69,7 +76,10 @@ export function StepServices({ data, updateData, errors }: PropsStepServices){
             </View>
 
             <View style={styles.listService}>
-                <ServicesTable services={data.services || []}/>
+                <ServicesTable services={data.services || []}
+                onDelete={deleteService}
+                readonly={readonly}
+                />
             </View>
 
             {errors?.services?._errors?.[0] && (

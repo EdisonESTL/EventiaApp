@@ -32,6 +32,10 @@ export const StylesDefault = StyleSheet.create({
     subText:{
         fontSize: 14,
     },
+    subTextBold:{
+        fontSize: 14,
+        fontWeight: "500",
+    },
     subText2:{
         fontSize: 12,
     },

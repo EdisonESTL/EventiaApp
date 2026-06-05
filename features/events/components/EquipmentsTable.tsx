@@ -6,13 +6,13 @@ import { CircleButton } from "./CircleButton";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Colors } from "../constants/colors";
 
-export function EquipmentsTable({ equipments }: PropsEquipmentTable){
+export function EquipmentsTable({ equipments, onDelete, readonly }: PropsEquipmentTable){
     return(
         <View style={styles.ContainerTable}>
             <FlatList
             data={equipments}
             keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
-            renderItem={({ item }) => <TableItem item={item} />}
+            renderItem={({ item }) => <TableItem item={item} onDelete={onDelete} readonly={readonly} />}
             ListHeaderComponent={<Text style={StylesDefault.bodyTextBold}>Lista de equipos</Text>}
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             ListEmptyComponent={
@@ -27,7 +27,12 @@ export function EquipmentsTable({ equipments }: PropsEquipmentTable){
     );
 }
 
-function TableItem({item}: {item: EventEquipment}){
+function TableItem({item, onDelete, readonly}: 
+    {
+        item: EventEquipment; 
+        onDelete: (id: number) => void; 
+        readonly: boolean
+    }){
   return(
     <View style={styles.itemContainer}>
         <View style={styles.itemIcoContainer}>
@@ -38,11 +43,13 @@ function TableItem({item}: {item: EventEquipment}){
             <Text style={StylesDefault.bodyText}>{item.quantity}</Text>
         </View>
         <View style={styles.actionContainer}>
-            <CircleButton icono="trash"
-             onPress={() => console.log("si se pudo")}
-             colorIcono="#ffffff"
-             backgroundColor={Colors.delete}
-             />
+            {!readonly && (
+                <CircleButton icono="trash"
+                 onPress={() => onDelete(item.id!)}
+                 colorIcono="#ffffff"
+                 backgroundColor={Colors.delete}
+                 />
+            )}
         </View>    
     </View>
   );
