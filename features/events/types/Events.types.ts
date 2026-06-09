@@ -144,6 +144,7 @@ export type PropsFinancialBox ={
   icono: keyof typeof MaterialIcons.glyphMap;
   title: string;
   value: string | number;
+  showAmounts?: boolean;
 }
 
 export type PropsHeadTitle={
@@ -377,4 +378,18 @@ export type PropsEventForm = {
   onEdit?: () => void;
   onDelete?: () => void;
   titleText: string;
+}
+
+//Props para FinancialArea
+export type PropsFinancialArea = {
+  monthsIncome?: number; 
+  outstandingPayments?: number; 
+  monthsSales?: number;
+  showAmounts?: boolean;
+}
+
+//Props para HeadAction
+export type PropsHeadAction = {
+  onPress: () => void;
+  showAmounts: boolean;
 }

@@ -1,8 +1,9 @@
 import React from "react";
-import { Text, Image, StyleSheet, View } from "react-native";
+import { Text, Image, StyleSheet, View, Pressable } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { StylesDefault } from "../styles/StylesDefault";
+import { PropsHeadAction } from "../types/Events.types";
 
 function TitleApp() {
   return (
@@ -29,21 +30,37 @@ function NameApp() {
   );
 }
 
-function NotificationArea() {
+function NotificationArea(
+  { 
+    onPress, 
+    showAmounts 
+  }: 
+  { 
+  onPress: () => void; 
+  showAmounts: boolean 
+  }
+) {
   return(
     <View style={styles.element2}>
+
       <MaterialIcons name="notifications" size={30} color="black" />
-      <Entypo name="eye" size={30} color="black" />
-      <Entypo name="eye-with-line" size={30} color="black" />
+
+      <Pressable onPress={onPress}>
+        <Entypo name={ showAmounts ? "eye" : "eye-with-line"} 
+        size={30} 
+        color="black" />
+      </Pressable>
+
     </View>
   );
 }
 
-export function HeadAction() {
+export function HeadAction({ onPress, showAmounts }: PropsHeadAction) {
   return (
     <View style={styles.container}>
       <TitleApp />
-      <NotificationArea />
+      <NotificationArea onPress={onPress}
+      showAmounts={showAmounts} />
     </View>
   );
 }
@@ -71,7 +88,7 @@ const styles = StyleSheet.create({
   },
   element2: {
     flex: 1,
-    gap: 10,
+    gap: 30,
     alignItems: "center",
   }
 });

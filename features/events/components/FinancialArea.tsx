@@ -2,10 +2,11 @@ import React from "react";
 import {View, Text, StyleSheet, ScrollView } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { StylesDefault } from "../styles/StylesDefault";
-import { PropsFinancialBox} from "../types/Events.types";
+import { PropsFinancialArea, PropsFinancialBox} from "../types/Events.types";
 import { HeadTitle } from "../components/HeadTitle";
 
-export function FinancialArea(){
+export function FinancialArea({monthsIncome, outstandingPayments, monthsSales, showAmounts}: PropsFinancialArea) {
+    
     return(
         <View style={StylesDefault.container}>
             <HeadTitle titleTex="Resumen Financiero" 
@@ -13,37 +14,43 @@ export function FinancialArea(){
             titleTextAction="Este mes" 
             iconoAction="keyboard-arrow-down" 
             onPress={() => console.log("si se pudo")}/>
-            <CardResume />
+            <CardResume monthsIncome={monthsIncome} outstandingPayments={outstandingPayments} monthsSales={monthsSales} showAmounts={showAmounts} />
         </View>
     );
 }
 
-function CardResume(){
+function CardResume({monthsIncome, outstandingPayments, monthsSales, showAmounts }: PropsFinancialArea){
     return(
         <ScrollView horizontal
             contentContainerStyle={styles.container}
             showsHorizontalScrollIndicator={false}>
+
             <FinancialBox backgroundColor="#47DDAA33" 
             icono="attach-money"
             title="Ingresos del mes"
-            value={2400} />
+            value={"$ " + monthsIncome?.toFixed(2) || "0.00"}
+            showAmounts={showAmounts}
+             />
+
             <FinancialBox backgroundColor="#EDED1133" 
             icono="credit-card"
             title="Por cobrar"
-            value={400} />
+            value={"$ " + outstandingPayments?.toFixed(2) || "0.00"}
+            showAmounts={showAmounts}
+             />
+
             <FinancialBox backgroundColor="#7E258E33" 
             icono="calendar-month"
             title="Evento este mes"
-            value={4} />
-            <FinancialBox backgroundColor="#1FA2CF33" 
-            icono="calendar-month"
-            title="Por pagar"
-            value={200} />
+            value={"$ " + monthsSales?.toFixed(2) || "0.00"}
+            showAmounts={showAmounts}
+             />
+            
         </ScrollView>
     );
 }
 
-function FinancialBox({backgroundColor, icono, title, value}: PropsFinancialBox){
+function FinancialBox({backgroundColor, icono, title, value, showAmounts}: PropsFinancialBox){
     return(
         <View style={[styles.financialBox, {backgroundColor}]}>
             <View style={styles.container1}>
@@ -51,7 +58,9 @@ function FinancialBox({backgroundColor, icono, title, value}: PropsFinancialBox)
                 <Text style={StylesDefault.subText2}>{title}</Text>
             </View>
             
-            <Text style={StylesDefault.h3Text}>{value}</Text>
+            <Text style={StylesDefault.h3Text}>
+                {showAmounts ? value : "$ ****"}
+            </Text>
         </View>
     );
 }
