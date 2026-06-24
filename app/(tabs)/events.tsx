@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
 import HeadDefault from "@/features/admin/components/HeadDefault";
@@ -18,6 +18,9 @@ export default function EventScreen() {
          icono="calendar"/>
       </View>
 
+      <View>
+        <Text>Hola</Text>
+      </View>
       <View style={styles.body}>
         <FilterableEventsTable />
       </View>
