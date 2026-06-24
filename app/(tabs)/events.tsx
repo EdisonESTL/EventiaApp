@@ -18,9 +18,6 @@ export default function EventScreen() {
          icono="calendar"/>
       </View>
 
-      <View>
-        <Text>Hola</Text>
-      </View>
       <View style={styles.body}>
         <FilterableEventsTable />
       </View>
