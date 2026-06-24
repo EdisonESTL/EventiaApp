@@ -4,6 +4,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { StylesDefault } from "../styles/StylesDefault";
 import { PropsHeadAction } from "../types/Events.types";
+import { scheduleNotification } from "../services/notificationService";
 
 function TitleApp() {
   return (
@@ -17,7 +18,9 @@ function TitleApp() {
 function LogoApp() {
   return (
     <View style={styles.logo}>
-      <Image style={styles.imageLogo} source={require("../../../assets/images/eventia.png")}/>
+      <Pressable onPress={() => scheduleNotification({title: "Don't forget!", body: "Check your events today!"})}>
+         <Image style={styles.imageLogo} source={require("../../../assets/images/eventia.png")}/>
+      </Pressable>
     </View>
   );
 }

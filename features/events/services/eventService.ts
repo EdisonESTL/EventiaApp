@@ -774,81 +774,11 @@ export const updateEvent = (event: Event) => {
   }
 }
 
-//Suma todos los abonos y los pagos recibidos en el mes, agrupados por mes. Solo eventos no eliminados (deleted = 0) y que tengan algún pago (paid_amount > 0)
-export const monthlyIncome = (): { month: string; total: number }[] => {
-  try {
-    const result = db.getAllSync<{ month: string; total: number }>(`
-      SELECT 
-        strftime('%Y-%m', start_datetime) AS month,
-        SUM(paid_amount) AS total
-      FROM events
-      WHERE deleted = 0 AND paid_amount > 0
-      GROUP BY month
-      ORDER BY month ASC
-    `);
-    return result;
-  } catch (error) {
-    console.log("Error obteniendo ingresos mensuales:", error);
-    return [];
-  }
-};
-
-//Pendiente por cobrar
-export const OutstandingPayments = (): { month: string; total: number }[] => {
-  try {
-    const result = db.getAllSync<{ month: string; total: number }>(`
-      SELECT
-        strftime('%Y-%m', start_datetime) AS month,
-        SUM(total_cost - paid_amount) AS total
-      FROM events
-      WHERE deleted = 0
-        AND total_cost > paid_amount
-      GROUP BY month
-      ORDER BY month ASC
-    `);
-    return result;
-  } catch (error) {
-    console.log("Error obteniendo pagos pendientes:", error);
-    return [];
-  }
-};
-
-//Ventas del mes
-export const monthlySales = (): { month: string; total: number }[] => {
-  try {
-    const result = db.getAllSync<{ month: string; total: number }>(`
-      SELECT 
-        strftime('%Y-%m', start_datetime) AS month,
-        SUM(total_cost) AS total
-      FROM events
-      WHERE deleted = 0
-      GROUP BY month
-      ORDER BY month ASC
-    `);
-    return result;
-  } catch (error) {
-    console.log("Error obteniendo ventas mensuales:", error);
-    return [];
-  }
-};
-
-export const currentMonthSummary = (): { month: string; totalIncome: number; totalOutstanding: number; totalSales: number } | null => {
-  try {
-    const result = db.getFirstSync<{ month: string; totalIncome: number; totalOutstanding: number; totalSales: number }>(`
-      SELECT
-        strftime('%Y-%m', start_datetime) AS month,
-        SUM(paid_amount) AS totalIncome,
-        SUM(total_cost - paid_amount) AS totalOutstanding,
-        SUM(total_cost) AS totalSales
-      FROM events
-      WHERE deleted = 0
-        AND strftime('%Y-%m', start_datetime) = strftime('%Y-%m', 'now')
-      GROUP BY month
-    `);
-    return result || null;
-  } catch (error) {
-    console.log("Error obteniendo resumen del mes actual:", error);
-    return null;
-  }
-
-};
+export function getPaidEvents() {
+  return db.getAllSync<Event>(`
+    SELECT *
+    FROM events
+    WHERE deleted = 0
+      AND paid_amount > 0
+  `);
+}

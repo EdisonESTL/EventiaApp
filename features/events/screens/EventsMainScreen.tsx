@@ -5,8 +5,10 @@ import { HeadAction } from "../components/HeadAction";
 import { FinancialArea } from "../components/FinancialArea";
 import { FilterableEventsTable } from "../components/FiltereableEventsTable";
 import { StylesDefault } from "../styles/StylesDefault";
-import { currentMonthSummary } from "../services/eventService";
+import { currentMonthSummary } from "../services/financialService";
 import { useFocusEffect } from "expo-router";
+import { requestNotificationPermission } from "../services/notificationService";
+import { HeadTitle } from "../components/HeadTitle";
 
 export function EventsMainScreen() {
 
@@ -19,6 +21,7 @@ export function EventsMainScreen() {
   }
 
   useEffect(() => {
+    requestNotificationPermission();
     setMonthFinancial(currentMonthSummary());
   }, []);
 
@@ -52,6 +55,11 @@ export function EventsMainScreen() {
               </View>
             
             <View style={styles.FilterableEventsTable} >
+                <HeadTitle titleTex="Próximos eventos"
+                    iconoTitle="calendar-clear"
+                    titleTextAction="Ver todos"
+                    iconoAction="arrow-right"
+                    onPress={() => console.log("si se pudo")} />
                 <FilterableEventsTable />
             </View>
           </KeyboardAvoidingView>

@@ -5,7 +5,6 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { getEvents } from "../services/eventService";
 import { EventListItem, PropsSearchBar, PropsInfoRow } from "../types/Events.types";
 import { useFocusEffect } from "@react-navigation/native";
-import { HeadTitle } from "../components/HeadTitle";
 import { StylesDefault } from "../styles/StylesDefault";
 import { router } from "expo-router";
 
@@ -36,11 +35,6 @@ export function FilterableEventsTable() {
 
   return (
     <View style={StylesDefault.container}>
-      <HeadTitle titleTex="Próximos eventos"
-      iconoTitle="calendar-clear"
-      titleTextAction="Ver todos"
-      iconoAction="arrow-right"
-      onPress={() => console.log("si se pudo")} />
       <SearchBar filterText={filterText} setFilterText={setFilterText} />
       <EventsTable events={filteredEvents} />
     </View>
