@@ -6,7 +6,7 @@ import VoucherSelector from "../../components/VoucherSelector";
 import { NewsBox } from "../../components/NewsBox";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DropdownItem, PaymentMethod, PropsOutstandingBalance, PropsStepFinancial } from "../../types/Events.types";
-import { StylesDefault } from "../../styles/StylesDefault";
+import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 import { DropDownPick } from "../../components/DropDownPick";
 import { getPaymentMethods } from "../../services/eventService";
 

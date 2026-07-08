@@ -3,7 +3,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { PropsHeadTitle, PropsTextAction, PropsTextTitle } from "../types/Events.types";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 
 //Componente compuesto de un grafico a la deracha con texto y un boton de accion al lado izquierdo
 export function HeadTitle({titleTex, iconoTitle, titleTextAction, iconoAction, onPress}:PropsHeadTitle){

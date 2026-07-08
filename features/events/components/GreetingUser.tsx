@@ -1,8 +1,9 @@
 import React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
-import { StylesDefault } from "../styles/StylesDefault";
-import { ActionButton } from "./ActionButton";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
+import { ActionButton } from "@/shared/components/ActionButton";
+import { Colors } from "@/shared/constants/colors";
 
 export function GreetingUser() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export function GreetingUser() {
         <ActionButton title="Crear evento" 
         icono="add" 
         onPress={() => router.push("/events/create")}
-        colorsButton={['#522E9B',"#3968B5", '#20A1CF',]}
+        colorsButton={Colors.gradients.primary}
         color="#ffffff"/>
       </View>
     </View>

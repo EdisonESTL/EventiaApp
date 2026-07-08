@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import {View, StyleSheet, Modal, Text, Pressable, ScrollView, KeyboardAvoidingView, Platform} from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
-import { CircleButton } from "../../components/CircleButton";
+import { CircleButton } from "../../../../shared/components/CircleButton";
 import { StaffTable } from "../../components/StaffTable";
 import { EquipmentsTable } from "../../components/EquipmentsTable";
 import { EventEquipment, EventStaff, PropsStepLogistic } from "../../types/Events.types";
-import { StylesDefault } from "../../styles/StylesDefault";
+import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { InputText } from "../../components/InputText";
-import { ActionButton } from "../../components/ActionButton";
+import { ActionButton } from "@/shared/components/ActionButton";
 
 export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
     const [staffList, setStaffList] = useState<EventStaff[]>(data.staff || []);

@@ -1,10 +1,12 @@
 import React from "react";
-import { PropsActionButton } from "../types/Events.types";
+import { PropsActionButton } from "@/shared/types/Shared.types";
 import { Pressable, View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "@/shared/styles/StylesDefault";
 
+//Componente Boton degradado de 3 colores, bordes redondeados, 
+//con un icono al lado izquierdo y un texto
 export function ActionButton({ title, icono, onPress, colorsButton, color, readonly}: PropsActionButton) {
   return (
     <View style={styles.container}>
@@ -33,7 +35,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     gradient: {
-        //minWidth: 100,
         height: 60,
         borderRadius: 30,
         paddingHorizontal:30,

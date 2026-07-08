@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, Pressable } from "react-native";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import {EventStaff, PropsStaffTable} from "../types/Events.types"
-import { CircleButton } from "./CircleButton";
-import { Colors } from "../constants/colors";
+import { CircleButton } from "../../../shared/components/CircleButton";
+import { Colors } from "../../../shared/constants/colors";
 
 export function StaffTable({ 
     staff, 

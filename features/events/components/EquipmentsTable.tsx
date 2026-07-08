@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import {PropsEquipmentTable, EventEquipment} from "../types/Events.types"
-import { CircleButton } from "./CircleButton";
+import { CircleButton } from "../../../shared/components/CircleButton";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { Colors } from "../constants/colors";
+import { Colors } from "../../../shared/constants/colors";
 
 export function EquipmentsTable({ equipments, onDelete, readonly }: PropsEquipmentTable){
     return(

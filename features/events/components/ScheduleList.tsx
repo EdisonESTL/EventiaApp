@@ -7,9 +7,9 @@ import {
   FlatList
 } from "react-native";
 import { EventSchedule, PropsScheduleList } from "../types/Events.types";
-import { Colors } from "../constants/colors";
-import { CircleButton } from "./CircleButton";
-import { StylesDefault } from "../styles/StylesDefault";
+import { Colors } from "../../../shared/constants/colors";
+import { CircleButton } from "../../../shared/components/CircleButton";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 
 
 export function ScheduleList({ schedules, onDelete, onEdit, readonly }: PropsScheduleList) {

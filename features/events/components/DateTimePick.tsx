@@ -3,7 +3,7 @@ import React from "react";
 import { Pressable, View, Text, StyleSheet } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {PropDateTimePick} from "../types/Events.types"
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 
 export function DateTimePick({title, icono, mode, value, show, readonly,setShow, onChange}:PropDateTimePick){
     const formattedValue = mode === "date"

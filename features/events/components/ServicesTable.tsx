@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import {EventService, PropsServicesTable} from "../types/Events.types"
-import { Colors } from "../constants/colors";
-import { CircleButton } from "./CircleButton";
+import { Colors } from "../../../shared/constants/colors";
+import { CircleButton } from "../../../shared/components/CircleButton";
 
 export function ServicesTable({ services, onDelete, readonly }: PropsServicesTable){
     return(

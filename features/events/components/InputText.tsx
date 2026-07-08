@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
 import { PropsInputText } from "../types/Events.types";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 
 interface InputTextProps extends PropsInputText {
     value?: string;

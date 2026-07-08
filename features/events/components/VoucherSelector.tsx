@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Pressable, StyleSheet, Text, View,} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import { PropsVoucherOption, PropsVoucherSelector, ReceiptType } from "../types/Events.types";
 import { getReceiptTypes } from "../services/eventService";
 

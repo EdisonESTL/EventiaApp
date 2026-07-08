@@ -165,15 +165,6 @@ export type PropsInfoRow={
   text: string;
 }
 
-export type PropsActionButton={
-  title: string;
-  icono: keyof typeof Ionicons.glyphMap;
-  onPress: () => void;
-  colorsButton: [string, string, string];
-  color: string;
-  readonly?: boolean | true;
-}
-
 //Para CustomHeader 
 export type PropsCustomHeader = {
   icono1: keyof typeof Ionicons.glyphMap;
@@ -189,15 +180,6 @@ export type PropsCustomHeader = {
   colors: [string, string, string];
   readonly?: boolean;
 };
-
-//Para CircleButton
-export type PropsCircleButton ={
-  icono: keyof typeof Ionicons.glyphMap;
-  onPress: () => void;
-  colorIcono: string;
-  backgroundColor: string;
-  readonly?: boolean;
-}
 
 //Para HeadTitleDefault
 export type PropsHeadTitleDefault ={

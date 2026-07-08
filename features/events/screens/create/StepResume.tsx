@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, Text } from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { PropsStepResume } from "../../types/Events.types";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { StylesDefault } from "../../styles/StylesDefault";
+import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 
 export function StepResume({data, updateData}: PropsStepResume){
     const start = new Date(data.start_datetime || "");

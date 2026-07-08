@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
 import { PropsHeadTitleDefault } from "../types/Events.types";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 //Componente usado como titulo principal de formulario, por defecto usa una imagen

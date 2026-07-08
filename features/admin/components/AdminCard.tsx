@@ -2,8 +2,8 @@ import { PropsAdminCard } from "@/features/admin/types/Admin.types"
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons"
 import React from "react"
 import { View, Text, StyleSheet, Pressable} from "react-native"
-import { StylesDefault } from "../../events/styles/StylesDefault"
-import { Colors } from "../../events/constants/colors"
+import { StylesDefault } from "../../../shared/styles/StylesDefault"
+import { Colors } from "../../../shared/constants/colors"
 
 export function AdminCard({
   title, 

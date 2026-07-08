@@ -5,7 +5,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { getEvents } from "../services/eventService";
 import { EventListItem, PropsSearchBar, PropsInfoRow } from "../types/Events.types";
 import { useFocusEffect } from "@react-navigation/native";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import { router } from "expo-router";
 
 export function FilterableEventsTable() {

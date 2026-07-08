@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, Text} from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { InputText, InputTextMultiline } from "../../components/InputText";
 import { PropsStepClient } from "../../types/Events.types";
-import { StylesDefault } from "../../styles/StylesDefault";
+import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 
 export function StepClient({ data, updateData, errors, readonly }: PropsStepClient){
     

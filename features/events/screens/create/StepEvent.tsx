@@ -7,7 +7,7 @@ import { DateTimePick } from "../../components/DateTimePick";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { DropdownItem, PropsStepEvent } from "../../types/Events.types";
 import { getEventTypes, getPackages } from "../../services/eventService";
-import { StylesDefault } from "../../styles/StylesDefault";
+import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 
 export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent){
     

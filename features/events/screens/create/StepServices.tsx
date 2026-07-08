@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { View, StyleSheet, Text, Modal, Pressable, FlatList } from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
-import { ActionButton } from "../../components/ActionButton";
+import { ActionButton } from "@/shared/components/ActionButton";
 import { EventService, PropsResumeServices, PropsStepServices, Service } from "../../types/Events.types";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { StylesDefault } from "../../styles/StylesDefault";
+import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 import { ServicesTable } from "../../components/ServicesTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getServices } from "../../services/eventService";

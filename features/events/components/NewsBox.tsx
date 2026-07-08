@@ -2,7 +2,7 @@ import React from "react";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { PropsNewsBox } from "../types/Events.types";
 import { View, Text, StyleSheet } from "react-native";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 
 export function NewsBox({title, icono, backgroundColor, colorIcono}:PropsNewsBox){
     return(

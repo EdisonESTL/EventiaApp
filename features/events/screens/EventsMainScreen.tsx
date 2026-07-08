@@ -4,7 +4,7 @@ import { GreetingUser } from "../components/GreetingUser"
 import { HeadAction } from "../components/HeadAction";
 import { FinancialArea } from "../components/FinancialArea";
 import { FilterableEventsTable } from "../components/FiltereableEventsTable";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import { currentMonthSummary } from "../services/financialService";
 import { useFocusEffect } from "expo-router";
 import { requestNotificationPermission } from "../services/notificationService";

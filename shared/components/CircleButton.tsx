@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { PropsCircleButton } from "../types/Events.types";
+import { PropsCircleButton } from "@/shared/types/Shared.types";
 
 export function CircleButton({icono, onPress, colorIcono, backgroundColor, readonly}:PropsCircleButton){
     return(

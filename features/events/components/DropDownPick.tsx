@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { PropsDropDownPick } from "../types/Events.types";
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import { readonly } from 'zod';
 
 export function DropDownPick({

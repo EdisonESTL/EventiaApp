@@ -2,7 +2,7 @@ import { Stack, router } from "expo-router";
 import React, {useEffect, useState} from "react";
 import { StyleSheet, View, KeyboardAvoidingView, Platform} from "react-native";
 import { CustomHeader } from "../components/CustomHeader";
-import { ActionButton } from "../components/ActionButton";
+import { ActionButton } from "@/shared/components/ActionButton";
 import { StepEvent } from "@/features/events/screens/create/StepEvent";
 import { StepClient } from "@/features/events/screens/create/StepClient";
 import { StepServices } from "@/features/events/screens/create/StepServices";

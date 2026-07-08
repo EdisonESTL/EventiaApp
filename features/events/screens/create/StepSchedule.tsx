@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Modal, KeyboardAvoidingView, ScrollView, Text, Pressable, Platform } from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
-import { ActionButton } from "../../components/ActionButton";
+import { ActionButton } from "@/shared/components/ActionButton";
 import { EventSchedule, PropsStepSchedule } from "../../types/Events.types";
 import { InputText } from "../../components/InputText";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
-import { StylesDefault } from "../../styles/StylesDefault";
+import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 import { ScheduleList } from "../../components/ScheduleList";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 

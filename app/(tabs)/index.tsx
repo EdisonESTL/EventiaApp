@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
 import { initDB, seedDB } from "@/database/migrations";
 import { EventsMainScreen } from "@/features/events/screens/EventsMainScreen";
-import { StylesDefault } from "@/features/events/styles/StylesDefault";
+import { StylesDefault } from "@/shared/styles/StylesDefault";
 
 export default function Index() {
   useEffect(() => {

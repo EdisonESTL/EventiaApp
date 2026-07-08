@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Image, StyleSheet, View, Pressable } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { StylesDefault } from "../styles/StylesDefault";
+import { StylesDefault } from "../../../shared/styles/StylesDefault";
 import { PropsHeadAction } from "../types/Events.types";
 import { scheduleNotification } from "../services/notificationService";
 
