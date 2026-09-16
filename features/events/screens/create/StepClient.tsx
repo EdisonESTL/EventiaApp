@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, Text} from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
-import { InputText, InputTextMultiline } from "../../components/InputText";
+import { InputText, InputTextMultiline } from "@/shared/components/InputText";
 import { PropsStepClient } from "../../types/Events.types";
 import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 

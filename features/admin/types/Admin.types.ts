@@ -1,5 +1,11 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+export interface EventType{
+  id?: number;
+  name: string;
+  deleted: number;
+}
+
 export interface PropsAdminCard {
   id: string;
   title: string;

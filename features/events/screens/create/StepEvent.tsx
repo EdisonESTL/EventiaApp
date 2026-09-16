@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
-import { InputText } from "../../components/InputText";
+import { InputText } from "@/shared/components/InputText";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { DropDownPick } from "../../components/DropDownPick";
 import { DateTimePick } from "../../components/DateTimePick";
@@ -125,13 +125,16 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
 
     return(
         <ScrollView style={styles.container}>
+
             <View style={styles.title}>
-            <HeadTitleDefault color="#000000" title="Datos del evento"
+                <HeadTitleDefault color="#000000" title="Datos del evento"
                 subtitle="Información general del evento"
                 icono="party-popper"/>
             </View>
+
             <View style={styles.input}>
-            <InputText title="Nombre del evento"
+                
+                <InputText title="Nombre del evento"
                 icono="user"
                 colorIcono="#000000"
                 color="#000000"
@@ -139,6 +142,7 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
                 value={data?.name}
                 onChangeText={(text) => updateData({ name: text })}
                 readonly={readonly}/>
+
                 {errors?.name?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
@@ -146,7 +150,9 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
                     </Text>
                 </View>
                 )}
+
             </View>
+
             <View style={styles.input}>
             <DropDownPick
                 title="Tipo de evento"

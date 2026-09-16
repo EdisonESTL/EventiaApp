@@ -7,7 +7,7 @@ import { EquipmentsTable } from "../../components/EquipmentsTable";
 import { EventEquipment, EventStaff, PropsStepLogistic } from "../../types/Events.types";
 import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
-import { InputText } from "../../components/InputText";
+import { InputText } from "@/shared/components/InputText";
 import { ActionButton } from "@/shared/components/ActionButton";
 
 export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){

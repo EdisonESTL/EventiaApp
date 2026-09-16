@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
-import { InputText } from "../../components/InputText";
+import { InputText } from "@/shared/components/InputText";
 import VoucherSelector from "../../components/VoucherSelector";
 import { NewsBox } from "../../components/NewsBox";
 import FontAwesome from '@expo/vector-icons/FontAwesome';

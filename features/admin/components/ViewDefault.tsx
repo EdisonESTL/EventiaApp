@@ -1,9 +1,7 @@
 import React from 'react';
-import { router } from 'expo-router';
 import {View, FlatList, Text, StyleSheet} from 'react-native';
 import { ActionButton } from '@/shared/components/ActionButton';
 import { StylesDefault } from '@/shared/styles/StylesDefault';
-import { Colors } from '@/shared/constants/colors';
 import { ItemListDefault } from './ItemListDefault';
 import HeadDefault from './HeadDefault';
 import Ionicons from '@expo/vector-icons/build/Ionicons';
@@ -11,6 +9,7 @@ import { GradientColors } from '@/shared/types/Shared.types';
 
 type PropsViewDefault = {
   data: any[];
+  titleList: string;
 
   titleHeader: string;
   subtitleHeader: string;
@@ -32,7 +31,9 @@ type PropsViewDefault = {
 
 //Componenente que incluye un encabezado, un botón de acción y 
 // una lista de elementos.
-export function ViewDefault({ data, 
+export function ViewDefault({ 
+  data, 
+  titleList,
   titleHeader, 
   subtitleHeader, 
   colorText,
@@ -77,17 +78,18 @@ export function ViewDefault({ data,
                     renderItem={({item }) => 
                     <ItemListDefault 
                     item={item} 
-                    colorText={colorText} />}
+                    colorText={colorText} />
+                    }
 
                     ListEmptyComponent={() => (
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={StylesDefault.h4Text}>No hay tipos de eventos disponibles</Text>
+                            <Text style={StylesDefault.h4Text}>No hay información disponible</Text>
                         </View>
                     )}
 
                     ListHeaderComponent={() => (
                         <View style={{ paddingVertical: 10 }}>
-                            <Text style={[ StylesDefault.h4Text, { color: colorText } ]}>Lista de Tipos de Eventos</Text>
+                            <Text style={[ StylesDefault.h4Text, { color: colorText } ]}>{titleList}</Text>
                         </View>
                     )}
 

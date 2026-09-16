@@ -1,3 +1,4 @@
+import FontAwesome from "@expo/vector-icons/build/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ColorValue } from "react-native";
 
@@ -24,3 +25,27 @@ export type PropsCircleButton ={
   backgroundColor: string;
   readonly?: boolean;
 }
+
+export type PropsInputText={
+  title: string;
+  icono: keyof typeof FontAwesome.glyphMap;
+  colorIcono: string;
+  color: string;
+  placeholder: string;
+  readonly: boolean | true;
+}
+
+//Define la apriencia del campo en el modal
+export type ModalField = {
+  type: "text" | "switch"
+  key: string;
+  title: string;
+  placeholder: string;
+
+  icono: keyof typeof FontAwesome.glyphMap;
+  colorIcono: string;
+  color: string;
+
+  readonly?: boolean;
+  visible?: boolean;
+};

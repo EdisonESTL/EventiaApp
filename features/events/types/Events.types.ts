@@ -196,16 +196,6 @@ export type PropsHeadTitle2 ={
   subtitle: string;
 }
 
-//Para CreateEventScreen
-export type PropsInputText={
-  title: string;
-  icono: keyof typeof FontAwesome.glyphMap;
-  colorIcono: string;
-  color: string;
-  placeholder: string;
-  readonly: boolean | true;
-}
-
 // Para DropDownPick
 export type PropsDropDownPick={
   title: string;

@@ -5,10 +5,44 @@ import { getReceiptTypes } from "@/features/admin/services/adminService";
 import { ViewDefault } from "@/features/admin/components/ViewDefault";
 import { Colors } from "@/shared/constants/colors";
 import { router } from "expo-router";
+import { ModalField } from "@/shared/types/Shared.types";
+import { ModalDefault } from "@/features/admin/components/ModalDefault";
 
 export default function ReceiptsTypes(){
 
     const [data, setData] = useState<PropsReceiptTypes[]>([]);
+    
+    // Estado para controlar la visibilidad del modal
+    const [showModal, setShowModal] = useState(false);
+
+    const fields: ModalField[] = [
+        {
+            key: "name",
+            type: "text",
+            title: "Nombre del comprobante",
+            placeholder: "Nota de venta",
+            icono: "file-text",
+            colorIcono: Colors.blue1,
+            color: Colors.blue1,
+            value: "",
+            onChangeText: (text: string) => {},
+            readonly: false,
+            visible: true,
+        },
+        {
+            key: "deleted",
+            type: "switch",
+            title: "Estado",
+            placeholder: "Estado del tipo de evento",
+            icono: "clone",
+            colorIcono: Colors.blue1,
+            color: Colors.blue1,
+            value: "activo",
+            onChangeText: (text: string) => {},
+            readonly: false,
+            visible: true,
+        },
+    ]
 
     const loadReceiptTypes = async () => {
         try {
@@ -19,6 +53,16 @@ export default function ReceiptsTypes(){
         }
     };
 
+    // Función para abrir el modal
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    // Función para cerrar el modal
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
     useEffect(() => {
         loadReceiptTypes();
     }, []);
@@ -27,6 +71,7 @@ export default function ReceiptsTypes(){
         <View style={styles.container}>
             <ViewDefault
                 data={data}
+                titleList="Lista de comprobantes que puedes entregar"
 
                 titleHeader="Tipos de Comprobantes"
                 subtitleHeader="Gestiona los tipos de comprobantes fiscales disponibles"
@@ -39,10 +84,19 @@ export default function ReceiptsTypes(){
                 
                 titleActionButton="Crear tipo de comprobante"
                 iconoActionButton="add"
-                onPressActionButton={() => console.log("Crear tipo de comprobante pressed")}
+                onPressActionButton={openModal}
                 colorsButtonActionButton={Colors.gradients.primary}
                 colorActionButton={Colors.white}
                 readonlyActionButton= {false}
+            />
+
+            <ModalDefault
+                isVisible={showModal}
+                onRequestClose={closeModal}
+                title="Crear comprobante"
+                subtitle="Ingresa los datos del nuevo comprobante"
+                readonly={false}
+                fields={fields}
             />
         </View>
     )

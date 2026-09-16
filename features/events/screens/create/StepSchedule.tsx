@@ -3,7 +3,7 @@ import { View, StyleSheet, Modal, KeyboardAvoidingView, ScrollView, Text, Pressa
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { ActionButton } from "@/shared/components/ActionButton";
 import { EventSchedule, PropsStepSchedule } from "../../types/Events.types";
-import { InputText } from "../../components/InputText";
+import { InputText } from "@/shared/components/InputText";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 import { ScheduleList } from "../../components/ScheduleList";
