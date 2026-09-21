@@ -28,21 +28,21 @@ function CardResume({monthsIncome, outstandingPayments, monthsSales, showAmounts
             <FinancialBox backgroundColor="#47DDAA33" 
             icono="attach-money"
             title="Ingresos del mes"
-            value={"$ " + monthsIncome?.toFixed(2) || "0.00"}
+            value={monthsIncome ? "$ " + monthsIncome?.toFixed(2) || "0.00" : "$ 0.00"}
             showAmounts={showAmounts}
              />
 
             <FinancialBox backgroundColor="#EDED1133" 
             icono="credit-card"
             title="Por cobrar"
-            value={"$ " + outstandingPayments?.toFixed(2) || "0.00"}
+            value={outstandingPayments ? "$ " + outstandingPayments?.toFixed(2) || "0.00" : "$ 0.00"}
             showAmounts={showAmounts}
              />
 
             <FinancialBox backgroundColor="#7E258E33" 
             icono="calendar-month"
             title="Evento este mes"
-            value={"$ " + monthsSales?.toFixed(2) || "0.00"}
+            value={monthsSales ?? "0"}
             showAmounts={showAmounts}
              />
             

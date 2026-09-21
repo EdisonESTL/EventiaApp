@@ -12,7 +12,12 @@ import { HeadTitle } from "../components/HeadTitle";
 
 export function EventsMainScreen() {
 
-  const [monthsFinancial, setMonthFinancial] = useState<{month: string; totalIncome: number; totalOutstanding: number; totalSales: number} | null>();
+  const [monthsFinancial, setMonthFinancial] = useState<{
+    month: string; 
+    totalIncome: number; 
+    totalOutstanding: number; 
+    totalSales: number
+  } | null>();
 
   const [showAmounts, setShowAmounts] = useState(true);
 

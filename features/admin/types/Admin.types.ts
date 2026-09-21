@@ -1,5 +1,16 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+export interface BaseType{
+  id?: number;
+  name: string;
+  deleted: number;
+}
+
+export interface ServicesType extends BaseType{
+  price: string;
+  description: string;
+}
+
 export interface EventType{
   id?: number;
   name: string;

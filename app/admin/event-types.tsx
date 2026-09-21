@@ -2,24 +2,29 @@ import { Colors } from "@/shared/constants/colors";
 import { ModalField } from "@/shared/types/Shared.types";
 import React, {useEffect, useState} from "react";
 import { View, StyleSheet } from "react-native";
-import { router } from "expo-router";
-import { getEventsTypes, saveEventTypes } from "@/features/admin/services/adminService";
+import { getEventsTypes, saveEventTypes, deleteEventTypes } from "@/features/admin/services/adminService";
 import { EventType, PropsEventsTypes } from "@/features/admin/types/Admin.types";
 import { ViewDefault } from "@/features/admin/components/ViewDefault";
 import { ModalDefault } from "@/features/admin/components/ModalDefault";
+import { router } from "expo-router";
 
 export default function EventTypes(){
     
     // Data de los tipos de eventos 
     const [data, setData] = useState<PropsEventsTypes[]>([]);
+
+    //Data del item para editar o eliminar
+    const [selectedItem, setSelectedItem] = useState<Partial<EventType> | null>(null);
+    const [isEditing, setIsEditing] = useState(false);
+
     // Estado para controlar la visibilidad del modal
     const [showModal, setShowModal] = useState(false);
     const fields: ModalField[] = [
         {
             key: "name",
             type: "text",
-            title: "Nombre de la categoría de evento",
-            placeholder: "Categoria",
+            title: "Nombre del tipo de eventos",
+            placeholder: "'Conferencia', 'Taller', 'Corporativo', etc.",
             icono: "clone",
             colorIcono: Colors.purple1,
             color: Colors.purple1,
@@ -51,19 +56,21 @@ export default function EventTypes(){
 
     // Función para abrir el modal
     const openModal = () => {
+        setIsEditing(false);
         setShowModal(true);
     };
 
     // Función para cerrar el modal
     const closeModal = () => {
+        setSelectedItem(null);
+        setIsEditing(false);
         setShowModal(false);
+        //loadEventTypes();
     };
 
     const saveEventType = (eventType: Partial<EventType>) => {
         try {
-            console.log("llego")
             if(isValidEvenType(eventType)){
-                console.log("se guarda", eventType)
                 saveEventTypes(eventType)
 
                 loadEventTypes();
@@ -76,6 +83,31 @@ export default function EventTypes(){
         };
     }
 
+    const editEventType = (eventType: Partial<EventType>) => {
+        try {
+            if(isValidEvenType(eventType)){
+                saveEventTypes(eventType)
+                closeModal();
+                loadEventTypes();
+            }
+        } catch(error){
+            console.log("ERROR EDITANDO TIPO DE EVENTO", error);
+        };
+    }
+
+    const deleteEventType = (eventType: Partial<EventType>) => {
+        try {
+            console.log("llego")
+            if(isValidEvenType(eventType)){
+                console.log("se elimina", eventType)
+                deleteEventTypes(eventType.id!)
+                loadEventTypes();
+            }
+        } catch(error){
+            console.log("ERROR ELIMINANDO TIPO DE EVENTO", error);
+        };
+    }
+
     //validar campos minimos para guardar
     const isValidEvenType = (eventType:Partial<EventType>) => {
     
@@ -83,6 +115,19 @@ export default function EventTypes(){
             !!eventType.name               
         );
 
+    };
+
+    //Botenes de accion para editar y elminiar los elemenmtos de la lista
+    const onPressEdit = (item: EventType) => {
+        setIsEditing(true);
+        setSelectedItem(item);
+        setShowModal(true);
+    };
+
+    const onPressDelete = (item: EventType) => {
+        console.log("Eliminar tipo de evento:", item);
+        setSelectedItem(item);
+        deleteEventType(item);
     };
 
     // Cargar los tipos de eventos al montar el componente
@@ -95,10 +140,10 @@ export default function EventTypes(){
         <View style={styles.container}>
             <ViewDefault
                 data={data}
-                titleList="Categorias de eventos que ofreces"
+                titleList="Tipos de eventos que ofreces"
 
                 titleHeader="Tipos de Eventos"
-                subtitleHeader="Gestiona las categorías de eventos que puedes ofrecer"
+                subtitleHeader="Gestiona los tipos de eventos que puedes ofrecer"
                 colorText={Colors.purple1}
 
                 iconoButtonHeader="chevron-back"
@@ -108,21 +153,28 @@ export default function EventTypes(){
 
                 titleActionButton="Crear tipo de Evento"
                 iconoActionButton="add"
-                onPressActionButton={openModal}
+                onPressActionButton={() => openModal()}
                 colorsButtonActionButton={Colors.gradients.secondary}
                 colorActionButton={Colors.white}
                 readonlyActionButton= {false}
 
+                onPressEdit={onPressEdit}
+                onPressDelete={onPressDelete}
             />
 
             <ModalDefault
                 isVisible={showModal}
                 onRequestClose={closeModal}
-                title="Crear categoría de evento"
-                subtitle="Ingresa los datos de la nueva categoría de evento"
+                title="Crear tipo de evento"
+                subtitle="Ingresa los datos del nuevo tipo de evento"
                 readonly={false}
                 fields={fields}
-                onPress={saveEventType}
+                onPress={isEditing ? editEventType : saveEventType}
+
+                isEditing={isEditing}
+                selectedItem={selectedItem}
+                titleEdit="Editar tipo de evento"
+                subtitleEdit="Modifica los datos del tipo de evento"
             />
         </View>
     )

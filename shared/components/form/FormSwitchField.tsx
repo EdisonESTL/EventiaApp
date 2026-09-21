@@ -11,7 +11,7 @@ type Props = {
 
 export function FormSwitchField({field, value, onChange}:Props) {
 
-    const isActive = value === "0";
+    const isActive = Number(value) === 0;
     const status = isActive ? "Activo" : "Inactivo";
 
 

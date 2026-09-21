@@ -70,6 +70,7 @@ export const monthlySales = (): { month: string; total: number }[] => {
   }
 };
 
+//Resumen del mes actual 
 export const currentMonthSummary = (): { month: string; totalIncome: number; totalOutstanding: number; totalSales: number } | null => {
   try {
     const result = db.getFirstSync<{ month: string; totalIncome: number; totalOutstanding: number; totalSales: number }>(`
@@ -77,7 +78,7 @@ export const currentMonthSummary = (): { month: string; totalIncome: number; tot
         strftime('%Y-%m', start_datetime) AS month,
         SUM(paid_amount) AS totalIncome,
         SUM(total_cost - paid_amount) AS totalOutstanding,
-        SUM(total_cost) AS totalSales
+        COUNT(total_cost) AS totalSales
       FROM events
       WHERE deleted = 0
         AND strftime('%Y-%m', start_datetime) = strftime('%Y-%m', 'now')

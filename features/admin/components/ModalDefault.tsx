@@ -1,7 +1,7 @@
 import { ActionButton } from '@/shared/components/ActionButton';
 import { StylesDefault } from '@/shared/styles/StylesDefault';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, 
     Modal, 
     ScrollView, 
@@ -18,11 +18,18 @@ import { FormSwitchField } from '@/shared/components/form/FormSwitchField';
 type PropsModalDefault<T> = {
     isVisible: boolean;
     onRequestClose: () => void;
+
     title: string;
     subtitle: string;
+
+    titleEdit?: string;
+    subtitleEdit?: string;
+    
     readonly: boolean;
     fields: ModalField[];
     onPress: (data: Partial<T>) => void;
+    isEditing?: boolean;
+    selectedItem?: Partial<T> | null;
   };
 
 export function ModalDefault<T>({ 
@@ -30,9 +37,13 @@ export function ModalDefault<T>({
     onRequestClose, 
     title, 
     subtitle, 
+    titleEdit,
+    subtitleEdit,
     readonly, 
     fields,
-    onPress
+    onPress,
+    isEditing,
+    selectedItem
     }: PropsModalDefault<T>) {
 
     //Almacena los datos del formulario
@@ -41,7 +52,19 @@ export function ModalDefault<T>({
     const handleSave = () => {
         onPress(formData)
     }
-    
+
+    useEffect(() => {
+
+        if (isVisible) {
+            if (selectedItem) {
+                console.log("Selected item in modal:", selectedItem);
+                setFormData(selectedItem);
+            } else {
+                setFormData({});
+            }
+        }
+    }, [selectedItem, isVisible]);
+
     return (
         <Modal 
         visible={isVisible}
@@ -64,11 +87,11 @@ export function ModalDefault<T>({
                             <View style={styles.modalHeader}>
                                 <View style={styles.modalTextHeader}>
                                     <Text style={StylesDefault.h3Text}>
-                                        {title}
+                                        {isEditing && titleEdit ? titleEdit : title}
                                     </Text>
 
                                     {subtitle && <Text style={StylesDefault.bodyText}>
-                                    {subtitle}
+                                        {isEditing && subtitleEdit ? subtitleEdit : subtitle}
                                     </Text>}
                                 </View>
 
@@ -92,7 +115,7 @@ export function ModalDefault<T>({
                                                 return <FormTextField 
                                                 field={field} 
                                                 key={field.key}
-                                                value={formData[field.key as keyof T] as string ?? ""}
+                                                value={String(formData[field.key as keyof T] ?? "si")}
                                                 onChange={(text) =>
                                                     setFormData(prev => ({
                                                         ...prev,

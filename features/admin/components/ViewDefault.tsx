@@ -27,6 +27,9 @@ type PropsViewDefault = {
   colorActionButton: string;
   readonlyActionButton?: boolean;
 
+  onPressEdit?: (item: any) => void;
+  onPressDelete?: (item: any) => void;
+
 };
 
 //Componenente que incluye un encabezado, un botón de acción y 
@@ -46,6 +49,8 @@ export function ViewDefault({
   onPressActionButton, 
   colorsButtonActionButton, 
   colorActionButton, 
+  onPressEdit,
+  onPressDelete,
   readonlyActionButton }: PropsViewDefault) {
   return (
 <View style={styles.container}>
@@ -78,7 +83,10 @@ export function ViewDefault({
                     renderItem={({item }) => 
                     <ItemListDefault 
                     item={item} 
-                    colorText={colorText} />
+                    colorText={colorText} 
+                    onPressEdit={onPressEdit}
+                    onPressDelete={onPressDelete}
+                    />
                     }
 
                     ListEmptyComponent={() => (
