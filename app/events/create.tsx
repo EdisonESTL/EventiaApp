@@ -5,6 +5,10 @@ import { StyleSheet } from "react-native";
 import { Event } from "@/features/events/types/Events.types";
 import { createEvent } from "@/features/events/services/eventService";
 import EventForm from "@/features/events/components/EventForm";
+import { clientSchema } from "@/features/events/schemas/client.schema";
+import { eventSchema } from "@/features/events/schemas/event.schema";
+import { serviceSchema } from "@/features/events/schemas/service.schema";
+import { financialSchema } from "@/features/events/schemas/financial.schema";
 
 export default function Create(){
     //Funcion para guardar el evento
@@ -17,9 +21,6 @@ export default function Create(){
             }else{
                 alert("Llene la informacion basica para guardar el evento:\n -Cliente \n -Evento \n -Servicio (minimo 1) \n -Informacion de pago");
             }
-
-            
-
         } catch(error){
 
             console.log("ERROR GUARDANDO:", error);
@@ -30,22 +31,14 @@ export default function Create(){
     const isValidBaseEvent = (event: Partial<Event>) => {
 
         return (
-            !!event.event_customer &&
-            !!event.description &&
-            !!event.name &&
-            !!event.event_type &&
-            !!event.event_package &&
-            !!event.location &&
-            !!event.start_datetime &&
-            !!event.end_datetime &&
-            !!event.receipt_type &&
-            !!event.payment_method &&
-            !!event.paid_amount &&
-            !!event.services &&
-            event.services.length > 0
+            clientSchema.safeParse(event).success &&
+            eventSchema.safeParse(event).success &&
+            serviceSchema.safeParse(event).success &&
+            financialSchema.safeParse(event).success &&
+            event.services && event.services.length > 0
         );
-    };
-    
+    }
+
     return(
         <>
         <Stack.Screen 

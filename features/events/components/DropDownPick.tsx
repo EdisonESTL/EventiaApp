@@ -4,7 +4,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { PropsDropDownPick } from "../types/Events.types";
 import { StylesDefault } from "../../../shared/styles/StylesDefault";
-import { readonly } from 'zod';
 
 export function DropDownPick({
   title,

@@ -5,7 +5,7 @@ import { deletePackagesTypes, getPackages, savePackagesTypes } from "@/features/
 import { ViewDefault } from "@/features/admin/components/ViewDefault";
 import { Colors } from "@/shared/constants/colors";
 import { router } from "expo-router";
-import { ModalDefault } from "@/features/admin/components/ModalDefault";
+import { ModalDefault } from "@/shared/components/ModalDefault";
 import { ModalField } from "@/shared/types/Shared.types";
 
 export default function PackagesTypes(){
@@ -70,7 +70,6 @@ export default function PackagesTypes(){
     const savePackageType = (packageType: Partial<BaseType>) => {
         try {
             if(isValidPackageType(packageType)){
-                console.log("Guardando tipo de paquete:", packageType);
                 savePackagesTypes(packageType);
                 closeModal();
                 loadPackagesTypes(); // Recargar los tipos de paquetes después de guardar
@@ -84,9 +83,7 @@ export default function PackagesTypes(){
 
     const editPackageType = (packageType: Partial<BaseType>) => {
         try {
-            if(isValidPackageType(packageType)){
-                console.log("Editando tipo de paquete:", packageType);
-                
+            if(isValidPackageType(packageType)){                
                 savePackagesTypes(packageType);
                 closeModal();
                 loadPackagesTypes(); // Recargar los tipos de paquetes después de editar
@@ -98,7 +95,6 @@ export default function PackagesTypes(){
     const deletePackageType = (packageType: Partial<BaseType>) => {
         try {
             if(isValidPackageType(packageType)){
-                console.log("Eliminando tipo de paquete:", packageType);
                 deletePackagesTypes(Number(packageType.id!));
                 loadPackagesTypes(); // Recargar los tipos de paquetes después de eliminar
             }
@@ -128,7 +124,6 @@ export default function PackagesTypes(){
     };
 
     const onPressDelete = (item: BaseType) => {
-        console.log("Eliminar tipo de paquete:", item);
         setSelectedItem(item);
         deletePackageType(item);
     };

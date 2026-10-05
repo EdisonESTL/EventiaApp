@@ -5,7 +5,7 @@ import { View, StyleSheet } from "react-native";
 import { getEventsTypes, saveEventTypes, deleteEventTypes } from "@/features/admin/services/adminService";
 import { EventType, PropsEventsTypes } from "@/features/admin/types/Admin.types";
 import { ViewDefault } from "@/features/admin/components/ViewDefault";
-import { ModalDefault } from "@/features/admin/components/ModalDefault";
+import { ModalDefault } from "@/shared/components/ModalDefault";
 import { router } from "expo-router";
 
 export default function EventTypes(){
@@ -25,7 +25,7 @@ export default function EventTypes(){
             type: "text",
             title: "Nombre del tipo de eventos",
             placeholder: "'Conferencia', 'Taller', 'Corporativo', etc.",
-            icono: "clone",
+            icono: "arrange-bring-to-front",
             colorIcono: Colors.purple1,
             color: Colors.purple1,
             readonly: false,
@@ -36,7 +36,7 @@ export default function EventTypes(){
             type: "switch",
             title: "Estado",
             placeholder: "Estado del tipo de evento",
-            icono: "clone",
+            icono: "state-machine",
             colorIcono: Colors.purple1,
             color: Colors.purple1,
             readonly: false,
@@ -97,9 +97,7 @@ export default function EventTypes(){
 
     const deleteEventType = (eventType: Partial<EventType>) => {
         try {
-            console.log("llego")
             if(isValidEvenType(eventType)){
-                console.log("se elimina", eventType)
                 deleteEventTypes(eventType.id!)
                 loadEventTypes();
             }
@@ -125,7 +123,6 @@ export default function EventTypes(){
     };
 
     const onPressDelete = (item: EventType) => {
-        console.log("Eliminar tipo de evento:", item);
         setSelectedItem(item);
         deleteEventType(item);
     };

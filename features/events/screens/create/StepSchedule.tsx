@@ -1,55 +1,111 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Modal, KeyboardAvoidingView, ScrollView, Text, Pressable, Platform } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { ActionButton } from "@/shared/components/ActionButton";
 import { EventSchedule, PropsStepSchedule } from "../../types/Events.types";
-import { InputText } from "@/shared/components/InputText";
-import Ionicons from "@expo/vector-icons/build/Ionicons";
-import { StylesDefault } from "../../../../shared/styles/StylesDefault";
 import { ScheduleList } from "../../components/ScheduleList";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { ModalDefault } from "@/shared/components/ModalDefault";
+import { ModalField } from "@/shared/types/Shared.types";
+import { Colors } from "@/shared/constants/colors";
+import { scheduleSchema } from "../../schemas/schedule.schema";
 
 export function StepSchedule({ data, updateData, readonly }: PropsStepSchedule){
     const [scheduleList, setScheduleList] = useState<EventSchedule[]>(data.schedule || []);
 
     const [showModal, setShowModal] = useState(false);
 
-    const [activities, setActivities] = useState({
-        title: "",
-        start_time: "",
-        end_time: "",
-    });
+    const [isEditing, setIsEditing] = useState(false);
 
-    const handleAddActivity = () => {
-        if(activities.title.trim() && activities.start_time.trim() && activities.end_time.trim()){
+    const [selectedItem, setSelectedItem] = useState<Partial<EventSchedule> | null>(null)
+
+    //Campos para ingresar la actividad en modal
+    const fields: ModalField[] = [
+        {
+            key: "title",
+            type: "text",
+            title: "Nombre de la actividad",
+            placeholder: "Ej: Registro de asistentes",
+            icono: "calendar",
+            colorIcono: Colors.blue1,
+            color: Colors.blue1,
+            readonly: false,
+            visible: true,
+        },
+        {
+            key: "start_time",
+            type: "time",
+            title: "Hora de inicio",
+            placeholder: "09:00 AM",
+            icono: "clock",
+            colorIcono: Colors.blue1,
+            color: Colors.blue1,
+            readonly: false,
+            visible: true,
+        },
+        {
+            key: "end_time",
+            type: "time",
+            title: "Hora de fin",
+            placeholder: "10:00 AM",
+            icono: "clock",
+            colorIcono: Colors.blue1,
+            color: Colors.blue1,
+            readonly: false,
+            visible: true,
+        }
+    ];
+
+    const handleAddActivity = (activity: Partial<EventSchedule>) => {
+
+        const toTimeString = (value: unknown): string => {
+            if (value instanceof Date && !Number.isNaN(value.getTime())) {
+            const hours = String(value.getHours()).padStart(2, "0");
+            const minutes = String(value.getMinutes()).padStart(2, "0");
+            return `${hours}:${minutes}`;
+            }
+
+            return typeof value === "string" ? value : "";
+        };
+
+        const activityToValidate = {
+            ...activity,
+            start_time: toTimeString(activity.start_time),
+            end_time: toTimeString(activity.end_time),
+        };
+
+        const result = scheduleSchema.safeParse(activityToValidate);
+
+        if(result.success){
             const newActivity: EventSchedule = {
                 id: Math.random(),
-                title: activities.title,
-                start_time: activities.start_time,
-                end_time: activities.end_time,
+                title: result.data.title,
+                start_time: result.data.start_time,
+                end_time: result.data.end_time,
                 event: 0, // Este valor se asignará al crear el evento completo
             };
             setScheduleList([...scheduleList, newActivity]);
             updateData({
                 schedule: [...scheduleList, newActivity]
             });
-            setActivities({
-                title: "",
-                start_time: "",
-                end_time: ""
-            });
             setShowModal(false);
         } else {
-            alert("Todos los campos son obligatorios");
+            const errors = result.error.format()
+            alert("Error en los datos de la actividad:\n" + 
+                errors.title?._errors + "\n" + 
+                errors.start_time?._errors + "\n" + 
+                errors.end_time?._errors);
         }
     };
 
+    const handleOpenModal = () => {
+        setIsEditing(false)
+        setSelectedItem({})
+        setShowModal(true);
+    }
     const handleCloseModal = () => {
-        setActivities({
-            title: "",
-            start_time: "",
-            end_time: ""
-        });
+        setIsEditing(false)
+        setSelectedItem({})
         setShowModal(false);
     }
 
@@ -61,14 +117,37 @@ export function StepSchedule({ data, updateData, readonly }: PropsStepSchedule){
         });
     }
 
-    const handleEditActivity = (updatedSchedule: EventSchedule) => {
-        const updatedList = scheduleList.map(activity => 
-            activity.id === updatedSchedule.id ? updatedSchedule : activity
-        );
+    const handleEditActivity = (updatedSchedule: Partial<EventSchedule>) => {
+
+        console.log("Updated Schedule:", updatedSchedule);
+
+        const updatedList: EventSchedule[] = scheduleList.map(activity => {
+            if(activity.id !== updatedSchedule.id) return activity;
+            
+            return{
+                ...activity,
+                ...updatedSchedule,
+                start_time: updatedSchedule.start_time ?? activity.start_time,
+                end_time: updatedSchedule.end_time ?? activity.end_time,
+            }
+        });
+
         setScheduleList(updatedList);
         updateData({
             schedule: updatedList
         });
+        setIsEditing(false);
+        setSelectedItem(null);
+        setShowModal(false);
+    }
+
+    
+
+    const onPressEdit = (item: EventSchedule) => {
+        console.log("activo modal")
+        setIsEditing(true)
+        setSelectedItem(item)
+        setShowModal(true)
     }
 
     return(
@@ -88,20 +167,20 @@ export function StepSchedule({ data, updateData, readonly }: PropsStepSchedule){
 
             </View>
 
-            <ScrollView style={styles.listContainer}>
+            <View style={styles.listContainer}>
 
                 <ScheduleList schedules={scheduleList}
                 onDelete={handleDeleteActivity}
-                onEdit={handleEditActivity}
+                onEdit={onPressEdit}
                 readonly={readonly}
                 />
 
-            </ScrollView>
+            </View>
 
             <View style={styles.activityContainer}>
 
                 <ActionButton title="Agregar actividad"
-                onPress={() => setShowModal(true)}
+                onPress={handleOpenModal}
                 icono="add-circle"
                 color="#ffffff"
                 colorsButton={["#541360","#AE27C6","#AE27C6"]}
@@ -109,81 +188,21 @@ export function StepSchedule({ data, updateData, readonly }: PropsStepSchedule){
 
             </View>
 
-            { /* aquí iría el modal para ingresar las actividades */}
-             <Modal 
-                 visible={showModal}
-                 transparent
-                 animationType="slide"
-             >
-                 <KeyboardAvoidingView 
-                     behavior={Platform.OS === "ios" ? "padding" : "height"}
-                     style={styles.keyboardContainer}
-                 >
-                     <View style={styles.modalOverlay}>
-                         <View style={styles.modalContainer}>
-                             <ScrollView 
-                                 scrollEnabled={true}
-                                 keyboardShouldPersistTaps="handled"
-                                 contentContainerStyle={{ flexGrow: 1 }}
-                             >
-                                 <View style={styles.modalHeader}>
-                                     <Text style={StylesDefault.h3Text}>
-                                         Ingresar datos de la actividad
-                                     </Text>
+           
+             <ModalDefault
+                isVisible={showModal}
+                onRequestClose={handleCloseModal}
+                title="Ingresar datos de la actividad"
+                subtitle="Complete los campos para agregar una nueva actividad"
+                readonly={readonly}
+                fields={fields}
+                onPress={isEditing ? handleEditActivity : handleAddActivity}
 
-                                     <Pressable onPress={handleCloseModal}>
-                                         <Ionicons
-                                             name="close"
-                                             size={28}
-                                             color="#000"
-                                         />
-                                     </Pressable>
-                                 </View>
-                                 <View style={styles.modalInputContainer}>
-                                     <InputText title="Actividad"
-                                     icono="list-ul"
-                                     colorIcono="#000000"
-                                     color="#000000"
-                                     placeholder="Actividad a realizar"
-                                     value={activities.title}
-                                     onChangeText={(text) => setActivities({...activities, title: text})}
-                                     readonly={readonly}/>
-                                     <InputText title="Hora de inicio"
-                                     icono="clock-o"
-                                     colorIcono="#000000"
-                                     color="#000000"
-                                     placeholder="Hora de inicio"
-                                     value={activities.start_time}
-                                     onChangeText={(text) => setActivities({...activities, start_time: text})}
-                                     readonly={readonly}/>                            
-                                     <InputText title="Hora de finalización"
-                                     icono="clock-o"
-                                     colorIcono="#000000"
-                                     color="#000000"
-                                     placeholder="Hora de finalización"
-                                     value={activities.end_time}
-                                     onChangeText={(text) => setActivities({...activities, end_time: text})}
-                                     readonly={readonly}/>
-                                 </View>
-                             </ScrollView>
-                             <View style={styles.modalButtons}>
-                                 <ActionButton title="Cancelar"
-                                 icono="close"
-                                 onPress={handleCloseModal}
-                                 colorsButton={["#605262","#605262","#605262"]}
-                                 color="#ffffff"
-                                 readonly={readonly}/>
-                                 <ActionButton title="Guardar"
-                                 icono="save"
-                                 onPress={handleAddActivity}
-                                 colorsButton={["#541360","#AE27C6","#AE27C6"]}
-                                 color="#ffffff"
-                                 readonly={readonly}/>                            
-                             </View>
-                         </View>
-                     </View>
-                 </KeyboardAvoidingView>
-             </Modal>
+                isEditing={isEditing}
+                selectedItem={selectedItem}
+                titleEdit="Editar actividad programada"
+                subtitleEdit="Modifa los datos de la actividad"
+             />
         </View>
     );
 }
@@ -285,4 +304,4 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 5,
     }
-});
+})

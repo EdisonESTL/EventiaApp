@@ -2,17 +2,41 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { Pressable, View, Text, StyleSheet } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {PropDateTimePick} from "../types/Events.types"
-import { StylesDefault } from "../../../shared/styles/StylesDefault";
+import {PropDateTimePick} from "../../../features/events/types/Events.types"
+import { StylesDefault } from "../../styles/StylesDefault";
 
-export function DateTimePick({title, icono, mode, value, show, readonly,setShow, onChange}:PropDateTimePick){
+export function DateTimePick({
+    title, 
+    icono, 
+    mode, 
+    value, 
+    show, 
+    readonly,
+    setShow, 
+    onChange}:PropDateTimePick){
+    
+        console.log("value en datetimepick", value)
+    
+    function timeStringToDate(value: string): Date {
+        const [hours, minutes] = value.split(":").map(Number);
+
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+        return date;
+    }
+
+    const dateValue = typeof value === "string" ?
+        timeStringToDate(value) : value;
+    
+    
     const formattedValue = mode === "date"
-            ? value.toLocaleDateString()
-            : value.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-    });
-        
+        ? dateValue.toLocaleDateString()
+        : dateValue.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+    });    
+    
+    
     return(
         <View style={styles.container}>
             <Text style={StylesDefault.bodyText}>{title}</Text>
@@ -30,9 +54,13 @@ export function DateTimePick({title, icono, mode, value, show, readonly,setShow,
             </View>
             {show && (
                 <DateTimePicker
-                value={value}
+                value={dateValue}
                 mode={mode}
-                onChange={onChange}
+                onChange={(event, selectedDate) => {                    
+                    onChange(event, selectedDate);
+                    setShow(false);
+                }}
+                design="default"
                 />
             )}
         </View>

@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { InputText } from "@/shared/components/InputText";
 import { HeadTitleDefault } from "../../components/HeadTitleDefault";
 import { DropDownPick } from "../../components/DropDownPick";
-import { DateTimePick } from "../../components/DateTimePick";
+import { DateTimePick } from "../../../../shared/components/form/DateTimePick";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { DropdownItem, PropsStepEvent } from "../../types/Events.types";
 import { getEventTypes, getPackages } from "../../services/eventService";

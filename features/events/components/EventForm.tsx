@@ -88,7 +88,7 @@ export default function EventForm({
         }
 
         if(!result.success){
-
+            console.log("Errores de validación:", result.error.format());
             setErrors(result.error.format());
 
             return false;

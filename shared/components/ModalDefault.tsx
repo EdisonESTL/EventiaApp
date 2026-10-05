@@ -14,6 +14,7 @@ import { KeyboardAvoidingView,
 import { ModalField } from '@/shared/types/Shared.types';
 import { FormTextField } from '@/shared/components/form/FormTextField';
 import { FormSwitchField } from '@/shared/components/form/FormSwitchField';
+import { DateTimePick } from './form/DateTimePick';
 
 type PropsModalDefault<T> = {
     isVisible: boolean;
@@ -49,14 +50,21 @@ export function ModalDefault<T>({
     //Almacena los datos del formulario
     const [formData, setFormData] = useState<Partial<T>>({});
 
+    //Abrir y cerrar DateTimePickers
+    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [dateTimePickerKey, setDateTimePickerKey] = useState<string | null>(null);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
     const handleSave = () => {
         onPress(formData)
     }
 
-    useEffect(() => {
+    
 
+    useEffect(() => {
         if (isVisible) {
             if (selectedItem) {
+                if(selectedItem)
                 console.log("Selected item in modal:", selectedItem);
                 setFormData(selectedItem);
             } else {
@@ -115,7 +123,7 @@ export function ModalDefault<T>({
                                                 return <FormTextField 
                                                 field={field} 
                                                 key={field.key}
-                                                value={String(formData[field.key as keyof T] ?? "si")}
+                                                value={String(formData[field.key as keyof T] ?? "")}
                                                 onChange={(text) =>
                                                     setFormData(prev => ({
                                                         ...prev,
@@ -136,7 +144,39 @@ export function ModalDefault<T>({
                                                     }))
                                                 }
                                                 />;
+                                            case "date":
+                                                return <DateTimePick
+                                                key={field.key}
+                                                title={field.title}
+                                                icono={field.icono}
+                                                mode="date"
+                                                value={formData[field.key as keyof T] as Date ?? new Date()}
+                                                show={showDatePicker}
+                                                readonly={field.readonly ?? false}
+                                                setShow={setShowDatePicker}
+                                                onChange={() => {}}
+                                                />;
+                                            case "time":
+                                                return <DateTimePick
+                                                key={field.key}
+                                                title={field.title}
+                                                icono={field.icono}
+                                                mode="time"
+                                                value={formData[field.key as keyof T] as Date ?? new Date()}
+                                                show={dateTimePickerKey === field.key ? showTimePicker : false}
+                                                readonly={field.readonly ?? false}
+                                                setShow={(show) => {
+                                                    setDateTimePickerKey(show ? field.key : null);
+                                                    setShowTimePicker(show);
+                                                }}
+                                                onChange={(event, selectedDate) => {
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        [field.key]: selectedDate
+                                                    }))
+                                                }}
 
+                                                />;
                                             default:
                                                 return null;
                                         }

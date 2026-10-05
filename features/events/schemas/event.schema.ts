@@ -5,18 +5,22 @@ export const eventSchema = z.object({
     .string({
         error: "el nombre del evento es obligatorio",
     })
+    .trim()
     .min(5, "el nombre debe tener minimo 5 caracteres"),
 
     location: z
     .string()
+    .trim()
     .min(1, "la dirección no debe estar vacia"),
 
     event_type: z.object({
-        name: z.string().min(1,"El tipo de evento no puede estar sin selección")
+        id: z.number({error: "el tipo de evento es obligatorio"}),
     }),
 
     event_package: z.object({
-        name: z.string(). min(1,"el paquete de evento no puede estar sin seleecionar")
+        name: z.string({error: "el paquete de evento es obligatorio"})
+        .trim()
+        .min(1,"el paquete de evento no puede estar sin seleecionar")
     }),
 
     start_datetime: z

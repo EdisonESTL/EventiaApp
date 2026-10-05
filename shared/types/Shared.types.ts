@@ -1,4 +1,5 @@
 import FontAwesome from "@expo/vector-icons/build/FontAwesome";
+import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ColorValue } from "react-native";
 
@@ -37,12 +38,12 @@ export type PropsInputText={
 
 //Define la apriencia del campo en el modal
 export type ModalField = {
-  type: "text" | "switch"
+  type: "text" | "switch" | "date" | "time";
   key: string;
   title: string;
   placeholder: string;
 
-  icono: keyof typeof FontAwesome.glyphMap;
+  icono: keyof typeof MaterialCommunityIcons.glyphMap;
   colorIcono: string;
   color: string;
 

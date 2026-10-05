@@ -59,7 +59,7 @@ export function ScheduleList({ schedules, onDelete, onEdit, readonly }: PropsSch
           lenghtSchedule={sortedSchedules.length}
         />
       )}
-      scrollEnabled={false}
+      scrollEnabled={true}
       nestedScrollEnabled={true}
     />
   );

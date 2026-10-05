@@ -5,7 +5,7 @@ import { deletePayWays, getPaymentMethods, savePayWays } from "@/features/admin/
 import { ViewDefault } from "@/features/admin/components/ViewDefault";
 import { Colors } from "@/shared/constants/colors";
 import { router } from "expo-router";
-import { ModalDefault } from "@/features/admin/components/ModalDefault";
+import { ModalDefault } from "@/shared/components/ModalDefault";
 import { ModalField } from "@/shared/types/Shared.types";
 
 export default function PayWays(){
@@ -69,7 +69,6 @@ export default function PayWays(){
     const savePaysWays = (paymentMethod: Partial<BaseType>) => {
         try {
             if(isValidPayWay(paymentMethod)){
-                console.log("Guardando forma de pago:", paymentMethod);
                 savePayWays(paymentMethod);
                 closeModal();
                 loadPaymentMethods(); // Recargar los tipos de paquetes después de guardar
@@ -84,7 +83,6 @@ export default function PayWays(){
     const editPaysWays = (paymentMethod: Partial<BaseType>) => {
         try {
             if(isValidPayWay(paymentMethod)){
-                console.log("Editando forma de pago:", paymentMethod);
                 savePayWays(paymentMethod);
                 closeModal();
                 loadPaymentMethods(); // Recargar los tipos de paquetes después de guardar
@@ -98,12 +96,10 @@ export default function PayWays(){
 
     const deletePaysWays = (paymentMethod: Partial<BaseType>) => {
         try {
-            console.log("Eliminando forma de pago con ID:", paymentMethod.id);
             if(isValidPayWay(paymentMethod)) {
                 // Lógica para eliminar la forma de pago
                 deletePayWays(Number(paymentMethod.id));
                 loadPaymentMethods(); // Recargar las formas de pago después de eliminar
-                console.log("1. Forma de pago eliminada con éxito:", paymentMethod.id);
             }
         } catch (error) {
             console.error("Error deleting payment method:", error);
@@ -127,7 +123,6 @@ export default function PayWays(){
     };
 
     const onPressDelete = (item: BaseType) => {
-        console.log("Eliminar tipo de paquete:", item);
         setSelectedItem(item);
         deletePaysWays(item);
     };

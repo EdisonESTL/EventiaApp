@@ -155,10 +155,9 @@ export const savePackagesTypes = (packageType: Partial<BaseType>) => {
 export const deletePackagesTypes = (id: number) => {
     try {
         db.runSync(`
-            UPDATE packages
-            SET deleted = ?
+            DELETE FROM packages
             WHERE id = ?
-        `, [1, id]);
+        `, [id]);
     }
     catch (error) {
         console.error("Error deleting package type:", error);
@@ -201,10 +200,9 @@ export const deletePayWays = (id: number) => {
     try {
         console.log("Eliminando forma de pago con ID:", id);
         db.runSync(`
-            UPDATE payment_methods
-            SET deleted = ?
+            DELETE FROM payment_methods
             WHERE id = ?
-        `, [1, id]);
+        `, [id]);
         console.log("Forma de pago eliminada con éxito:", id);
     }
     catch (error) {
@@ -248,14 +246,13 @@ export const deleteReceiptTypesService = (id: number) => {
     try {
         console.log("Eliminando tipo de comprobante con ID:", id);
         db.runSync(`
-            UPDATE receipt_types
-            SET deleted = ?
+            DELETE FROM receipt_types
             WHERE id = ?
-        `, [1, id]);
-        console.log("Forma de pago eliminada con éxito:", id);
+        `, [id]);
+        console.log("Tipo de comprobante eliminado con éxito:", id);
     }
     catch (error) {
-        console.error("Error deleting payment method:", error);
+        console.error("Error deleting receipt type:", error);
         throw error;
     }
 };
@@ -290,7 +287,7 @@ export const saveServicesService = (service: Partial<ServicesType>) => {
         }
     }
     catch (error) {
-        console.error("Error saving receipt type:", error);
+        console.error("Error saving service:", error);
         throw error;
     }
 };
@@ -299,14 +296,13 @@ export const deleteServicesService = (id: number) => {
     try {
         console.log("Eliminando servicio con ID:", id);
         db.runSync(`
-            UPDATE services
-            SET deleted = ?
+            DELETE FROM services
             WHERE id = ?
-        `, [1, id]);
+        `, [id]);
         console.log("Servicio eliminado con éxito:", id);
     }
     catch (error) {
-        console.error("Error deleting payment method:", error);
+        console.error("Error deleting service:", error);
         throw error;
     }
 };

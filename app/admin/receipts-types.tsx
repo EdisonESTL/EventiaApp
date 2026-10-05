@@ -6,7 +6,7 @@ import { ViewDefault } from "@/features/admin/components/ViewDefault";
 import { Colors } from "@/shared/constants/colors";
 import { router } from "expo-router";
 import { ModalField } from "@/shared/types/Shared.types";
-import { ModalDefault } from "@/features/admin/components/ModalDefault";
+import { ModalDefault } from "@/shared/components/ModalDefault";
 
 export default function ReceiptsTypes(){
 
@@ -70,7 +70,6 @@ export default function ReceiptsTypes(){
     const saveReceiptTypes = (receiptType: Partial<BaseType>) => {
         try {
             if(isValidReceiptType(receiptType)){
-                console.log("Guardando tipo de comprobante:", receiptType);
                 saveReceiptTypeService(receiptType);
                 closeModal();
                 loadReceiptTypes(); // Recargar los tipos de comprobantes después de guardar
@@ -85,7 +84,6 @@ export default function ReceiptsTypes(){
     const editReceiptTypes = (receiptType: Partial<BaseType>) => {
         try {
             if(isValidReceiptType(receiptType)){
-                console.log("Editando tipo de comprobante:", receiptType);
                 saveReceiptTypeService(receiptType);
                 closeModal();
                 loadReceiptTypes(); // Recargar los tipos de comprobantes después de guardar
@@ -99,12 +97,9 @@ export default function ReceiptsTypes(){
 
     const deleteReceiptTypes = (receiptType: Partial<BaseType>) => {
         try {
-            console.log("Eliminando tipo de comprobante con ID:", receiptType.id);
             if(isValidReceiptType(receiptType)) {
-                // Lógica para eliminar el tipo de comprobante
                 deleteReceiptTypesService(Number(receiptType.id));
                 loadReceiptTypes(); // Recargar los tipos de comprobantes después de eliminar
-                console.log("1. Tipo de comprobante eliminado con éxito:", receiptType.id);
             }
         } catch (error) {
             console.error("Error deleting receipt type:", error);
@@ -128,7 +123,6 @@ export default function ReceiptsTypes(){
     };
 
     const onPressDelete = (item: BaseType) => {
-        console.log("Eliminar tipo de paquete:", item);
         setSelectedItem(item);
         deleteReceiptTypes(item);
     };

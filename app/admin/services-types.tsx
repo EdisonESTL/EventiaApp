@@ -5,7 +5,7 @@ import { deleteServicesService, getServices, saveServicesService } from "@/featu
 import { ViewDefault } from "@/features/admin/components/ViewDefault";
 import { Colors } from "@/shared/constants/colors";
 import { router } from "expo-router";
-import { ModalDefault } from "@/features/admin/components/ModalDefault";
+import { ModalDefault } from "@/shared/components/ModalDefault";
 import { ModalField } from "@/shared/types/Shared.types";
 
 export default function ServicesTypes(){
@@ -36,7 +36,7 @@ export default function ServicesTypes(){
             type: "text",
             title: "Descripción",
             placeholder: "Dj",
-            icono: "sticky-note",
+            icono: "information",
             colorIcono: Colors.yellow1,
             color: Colors.yellow1,
             readonly: false,
@@ -47,7 +47,7 @@ export default function ServicesTypes(){
             type: "text",
             title: "Precio",
             placeholder: "$0.00",
-            icono: "money",
+            icono: "cash",
             colorIcono: Colors.yellow1,
             color: Colors.yellow1,
             readonly: false,
@@ -58,7 +58,7 @@ export default function ServicesTypes(){
             type: "switch",
             title: "Estado",
             placeholder: "Estado del servicioo",
-            icono: "clone",
+            icono: "stack-exchange",
             colorIcono: Colors.yellow1,
             color: Colors.yellow1,
             readonly: false,
@@ -91,7 +91,6 @@ export default function ServicesTypes(){
     const saveServices = (service: Partial<ServicesType>) => {
         try {
             if(isValidService(service)){
-                console.log("Guardando servicio:", service);
                 saveServicesService(service);
                 closeModal();
                 loadServices(); // Recargar los servicios después de guardar
@@ -106,7 +105,6 @@ export default function ServicesTypes(){
     const editServices = (service: Partial<ServicesType>) => {
         try {
             if(isValidService(service)){
-                console.log("Editando servicio:", service);
                 saveServicesService(service);
                 closeModal();
                 loadServices(); // Recargar los servicios después de guardar
@@ -120,12 +118,9 @@ export default function ServicesTypes(){
 
     const deleteServices = (service: Partial<ServicesType>) => {
         try {
-            console.log("Eliminando servicio con ID:", service.id);
             if(isValidService(service)) {
-                // Lógica para eliminar el servicio
                 deleteServicesService(Number(service.id));
                 loadServices(); // Recargar los servicios después de eliminar
-                console.log("1. Servicio eliminado con éxito:", service.id);
             }
         } catch (error) {
             console.error("Error deleting service:", error);
@@ -149,7 +144,6 @@ export default function ServicesTypes(){
     };
 
     const onPressDelete = (item: ServicesType) => {
-        console.log("Eliminar tipo de servicio:", item);
         setSelectedItem(item);
         deleteServices(item);
     };
