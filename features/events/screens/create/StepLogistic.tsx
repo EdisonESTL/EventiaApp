@@ -253,7 +253,7 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                                      />
 
                                      <InputText title="Nombre"
-                                     icono="user-circle"
+                                     icono="account-circle"
                                      colorIcono="#000000"
                                      color="#000000"
                                      placeholder="Nombre Completo"
@@ -325,7 +325,7 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                                 </View>
                                 <View style={styles.modalInput}>
                                     <InputText title="Nombre del equipo"
-                                    icono="plug"
+                                    icono="audio-input-rca"
                                     colorIcono="#000000"
                                     color="#000000"
                                     placeholder="Nombre del equipo "
@@ -334,7 +334,7 @@ export function StepLogistic({ data, updateData, readonly }: PropsStepLogistic){
                                     readonly={readonly}
                                     />
                                     <InputText title="Cantidad"
-                                    icono="list-ol"
+                                    icono="cube"
                                     colorIcono="#000000"
                                     color="#000000"
                                     placeholder="Cantidad"

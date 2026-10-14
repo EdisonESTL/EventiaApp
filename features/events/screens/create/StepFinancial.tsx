@@ -16,10 +16,13 @@ export function StepFinancial({ data, updateData, errors, readonly }: PropsStepF
 
     const [payTypes, setPayTypes] = useState<DropdownItem[]>([]);
 
-    const totalAmount = (total_cost: string | "0", paid_amount: string | "0") => {
-        const total = total_cost || "0";
-        const paid = paid_amount || "0";
-        return parseFloat(total) - parseFloat(paid);
+    const totalAmount = (total_cost: string, paid_amount: string): number => {
+        const total = parseFloat(total_cost) || 0;
+        const paid = parseFloat(paid_amount) || 0;
+
+        const result = total - paid;
+
+        return result < 0 ? 0 : result;
     };
 
     useEffect(() => {
@@ -39,8 +42,7 @@ export function StepFinancial({ data, updateData, errors, readonly }: PropsStepF
                 icono="cash"/>
             </View>
 
-            <View style={styles.inputSelector
-            }>
+            <View style={styles.inputSelector}>
                 <VoucherSelector 
                 valueSelected={data.receipt_type?.name ?? "recibo"} 
                 updateData={updateData}
@@ -50,7 +52,7 @@ export function StepFinancial({ data, updateData, errors, readonly }: PropsStepF
                 {errors?.receipt_type?._errors?.[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
-                        {errors.receipt_type._errors[0]}
+                        Seleccione un tipo de comprobante
                     </Text>
                 </View>
                 )}
@@ -59,7 +61,7 @@ export function StepFinancial({ data, updateData, errors, readonly }: PropsStepF
 
             <View style={styles.input}>
                 <InputText title="Costo total del evento" 
-                icono="shopping-cart" 
+                icono="cash" 
                 colorIcono="#000000"
                 color="#000000"
                 placeholder="Ejemplo Nombre"
@@ -79,17 +81,17 @@ export function StepFinancial({ data, updateData, errors, readonly }: PropsStepF
 
             <View style={styles.input}>
 
-                <InputText title="Abono realizado" 
-                icono="money" 
+                <InputText title="Abono realizado *" 
+                icono="cash" 
                 colorIcono="#000000"
                 color="#000000"
                 placeholder="0.0"
-                value={data.paid_amount?.toString() || "0"}
+                value={data.paid_amount?.toString() || ""}
                 onChangeText={(text) => {
 
                     if(text.trim() === ""){
                         updateData({
-                            paid_amount: "0"
+                            paid_amount: ""
                         });
                         return;
                     }
@@ -129,7 +131,7 @@ export function StepFinancial({ data, updateData, errors, readonly }: PropsStepF
 
             <View style={styles.inputPM}>
 
-                <DropDownPick title="Forma de pago" icono="credit-card"
+                <DropDownPick title="Forma de pago *" icono="credit-card"
                 value={paymentType?.id.toString() || null} 
                 setValue={(item) => {
                     const selected = payTypes.find(pt => pt.value === item);
@@ -152,7 +154,7 @@ export function StepFinancial({ data, updateData, errors, readonly }: PropsStepF
                 {errors?.payment_method?._errors?.[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
-                        {errors.payment_method._errors[0]}
+                        Seleccione una forma de pago
                     </Text>
                 </View>
                 )}

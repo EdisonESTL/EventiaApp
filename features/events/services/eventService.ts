@@ -330,6 +330,7 @@ export const getEventTypes = (): DropdownItem[] => {
   try {
     const result = db.getAllSync<EventType>(`
       SELECT id, name FROM event_types
+      ORDER BY name ASC
     `);
 
     return result.map((item) => ({
@@ -347,6 +348,7 @@ export const getPackages = (): DropdownItem[] => {
   try {
     const result = db.getAllSync<Package>(`
       SELECT id, name FROM packages
+      ORDER BY name ASC
     `);
 
     return result.map((item) => ({
@@ -381,6 +383,7 @@ export const getPaymentMethods = (): DropdownItem[] => {
   try {
     const result = db.getAllSync<PaymentMethod>(`
       SELECT id, name FROM payment_methods
+      ORDER BY name ASC
     `);
     return result.map((item) => ({
       value: item.id.toString(),

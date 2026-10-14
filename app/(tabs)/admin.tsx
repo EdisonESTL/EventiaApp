@@ -1,5 +1,5 @@
-import { router, Stack } from "expo-router";
-import React from "react";
+import { router, Stack, useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StylesDefault } from "@/shared/styles/StylesDefault";
@@ -7,16 +7,51 @@ import { AdminCard } from "@/features/admin/components/AdminCard";
 import { Colors } from '../../shared/constants/colors';
 import { PropsAdminCard } from "@/features/admin/types/Admin.types";
 import HeadDefault from './../../features/admin/components/HeadDefault';
+import { getEventsTypes, getPackages, getPaymentMethods, getReceiptTypes, getServices } from "@/features/admin/services/adminService";
 
 
 export default function Administration() {
+
+  const [eventTypesCount, setEventTypesCount] = useState(0);
+  const [packagesCount, setPackagesCount] = useState(0);
+  const [servicesCount, setServicesCount] = useState(0);
+  const [receiptsCount, setReceiptsCount] = useState(0);
+  const [payWaysCount, setPayWaysCount] = useState(0);
+
+  // Fetch counts for each module
+  const fetchCounts = async () => {
+    try {
+      const eventTypes = await getEventsTypes();
+      const packages = await getPackages();
+      const services = await getServices();
+      const receipts = await getReceiptTypes();
+      const payWays = await getPaymentMethods();
+      setEventTypesCount(eventTypes.length);
+      setPackagesCount(packages.length);
+      setServicesCount(services.length);
+      setReceiptsCount(receipts.length);
+      setPayWaysCount(payWays.length);
+    } catch (error) {
+      console.error("Error fetching counts:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCounts();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchCounts();
+    }, [])
+  );
 
   const adminOptions : PropsAdminCard[] = [
     {
       id: "1",
       title: "Tipo de Eventos",
       subtitle: "Gestiona las categorías de eventos que puedes ofrecer",
-      amount: "8 tipos de eventos",
+      amount: `${eventTypesCount} tipos de eventos`,
       icono: "party-popper",
       route: "/admin/event-types",
       textColor: Colors.purple1,
@@ -29,7 +64,7 @@ export default function Administration() {
       id: "2",
       title: "Paquetes",
       subtitle: "Administra los paquetes que ofreces",
-      amount: "3 paquetes",
+      amount: `${packagesCount} paquetes`,
       icono: "gift",
       route: "/admin/packages-types",
       textColor: Colors.green1,
@@ -42,7 +77,7 @@ export default function Administration() {
       id: "3",
       title: "Servicios",
       subtitle: "Gestiona los servicios que ofreces",
-      amount: "3 servicios",
+      amount: `${servicesCount} servicios`,
       icono: "star",
       route: "/admin/services-types",
       textColor: Colors.yellow1,
@@ -55,7 +90,7 @@ export default function Administration() {
       id: "4",
       title: "Tipos de comprobantes",
       subtitle: "Configura los tipos de comprobantes fiscales disponibles",
-      amount: "2 tipos comproban.",
+      amount: `${receiptsCount} tipos comproban.`,
       icono: "file-document",
       route: "/admin/receipts-types",
       textColor: Colors.blue1,
@@ -68,7 +103,7 @@ export default function Administration() {
       id: "5",
       title: "Formas de pago",
       subtitle: "Administra las formas de pago aceptadas",
-      amount: "3 formas pago",
+      amount: `${payWaysCount} formas pago`,
       icono: "credit-card",
       route: "/admin/pay-ways",
       textColor: Colors.orange1,

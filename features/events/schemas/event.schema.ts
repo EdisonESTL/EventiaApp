@@ -3,29 +3,29 @@ import { z } from "zod";
 export const eventSchema = z.object({
     name: z
     .string({
-        error: "el nombre del evento es obligatorio",
+        error: "El nombre del evento es obligatorio",
     })
     .trim()
-    .min(5, "el nombre debe tener minimo 5 caracteres"),
+    .min(5, "El nombre debe tener minimo 5 caracteres"),
 
     location: z
     .string()
     .trim()
-    .min(1, "la dirección no debe estar vacia"),
+    .min(1, "La dirección no debe estar vacia"),
 
     event_type: z.object({
-        id: z.number({error: "el tipo de evento es obligatorio"}),
+        id: z.number({error: "El tipo de evento es obligatorio"}),
     }),
 
     event_package: z.object({
-        name: z.string({error: "el paquete de evento es obligatorio"})
+        name: z.string({error: "El paquete de evento es obligatorio"})
         .trim()
-        .min(1,"el paquete de evento no puede estar sin seleecionar")
+        .min(1,"El paquete de evento no puede estar sin seleccionar")
     }),
 
     start_datetime: z
     .string({
-        error: "seleccione una fecha"
+        error: "Seleccione una fecha"
     })
     .min(1, "La fecha no puede estar vacia"),
 
@@ -33,5 +33,5 @@ export const eventSchema = z.object({
     .string({
         error: "Seleccione un horario"
     })
-    .min(1, "la fecha no puede estar vacia")
+    .min(1, "La fecha no puede estar vacia")
 });

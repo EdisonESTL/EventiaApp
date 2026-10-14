@@ -14,9 +14,7 @@ export function DateTimePick({
     readonly,
     setShow, 
     onChange}:PropDateTimePick){
-    
-        console.log("value en datetimepick", value)
-    
+        
     function timeStringToDate(value: string): Date {
         const [hours, minutes] = value.split(":").map(Number);
 

@@ -25,7 +25,7 @@ export default function EventTypes(){
             type: "text",
             title: "Nombre del tipo de eventos",
             placeholder: "'Conferencia', 'Taller', 'Corporativo', etc.",
-            icono: "arrange-bring-to-front",
+            icono: "tag",
             colorIcono: Colors.purple1,
             color: Colors.purple1,
             readonly: false,

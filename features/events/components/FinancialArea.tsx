@@ -76,11 +76,12 @@ const styles = StyleSheet.create({
         gap: 1,
     },
     financialBox:{
-        height:90,
+        height:"auto",
         alignItems: "center",
         justifyContent: "center",
-        gap: 3,
-        padding: 5,
+        gap: 5,
+        paddingVertical: 15,
+        paddingHorizontal: 5,
         borderRadius: 10,
     },
 });

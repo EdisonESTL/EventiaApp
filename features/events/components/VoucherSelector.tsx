@@ -22,7 +22,7 @@ export default function VoucherSelector({valueSelected, updateData, readonly}: P
     <View style={styles.container}>
 
       <Text style={StylesDefault.bodyText}>
-        Tipo de comprobante
+        Tipo de comprobante *
       </Text>
 
       <View style={styles.optionsContainer}>
@@ -77,11 +77,12 @@ const styles = StyleSheet.create({
 
   optionsContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 15,
   },
 
   optionButton: {
-    flex: 1,
+    paddingHorizontal: 20,
     height: 50,
 
     flexDirection: "row",

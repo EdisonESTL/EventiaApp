@@ -14,15 +14,19 @@ export async function requestNotificationPermission() {
   return status === 'granted';
 }
 
-export async function scheduleNotification({title, body}: {title: string; body: string }) {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: title,
-      body: body,
-    },
-    trigger:{
-        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-        seconds: 5, // For testing purposes, set to 5 seconds. Change to desired time for production.
-    }
-  });
+
+export async function eventReminderNotification(eventName: string, eventDate: Date) {
+  const now = new Date(eventDate.getTime() - 24 * 60 * 60 * 1000); // 24 hours before the event
+  if (now > new Date()) {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `Recuerda: ${eventName}`,
+        body: `Tu evento "${eventName}" es mañana "${eventDate.toLocaleDateString()}". ¡No olvides prepararte!`,
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        date: now,
+      },
+    });
+  }
 }

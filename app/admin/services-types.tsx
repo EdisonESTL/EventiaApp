@@ -24,7 +24,7 @@ export default function ServicesTypes(){
             key: "name",
             type: "text",
             title: "Nombre del servicio",
-            placeholder: "Dj",
+            placeholder: "Ejemplo: Dj, Manteleria, Fotografia, etc.",
             icono: "star",
             colorIcono: Colors.yellow1,
             color: Colors.yellow1,
@@ -35,8 +35,8 @@ export default function ServicesTypes(){
             key: "description",
             type: "text",
             title: "Descripción",
-            placeholder: "Dj",
-            icono: "information",
+            placeholder: "Descripción del servicio",
+            icono: "inbox",
             colorIcono: Colors.yellow1,
             color: Colors.yellow1,
             readonly: false,
@@ -57,7 +57,7 @@ export default function ServicesTypes(){
             key: "deleted",
             type: "switch",
             title: "Estado",
-            placeholder: "Estado del servicioo",
+            placeholder: "Estado del servicio",
             icono: "stack-exchange",
             colorIcono: Colors.yellow1,
             color: Colors.yellow1,
@@ -156,7 +156,7 @@ export default function ServicesTypes(){
         <View style={styles.container}>
             <ViewDefault
                 data={data}
-                titleList="Lista de serviciso que ofreces"
+                titleList="Lista de servicios que ofreces"
 
                 titleHeader="Servicios"
                 subtitleHeader="Gestiona los servicios que ofreces"

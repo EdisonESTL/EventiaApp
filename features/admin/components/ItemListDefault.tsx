@@ -6,6 +6,8 @@ import { StylesDefault } from '@/shared/styles/StylesDefault';
 
 type ListItemBase = {
     name?: string;
+    description?: string;
+    price?: string;
     deleted?: boolean;
 };
 
@@ -26,6 +28,8 @@ export function ItemListDefault<T extends ListItemBase>({
         <View style={styles.itemContainer}>
             <View >
                 <Text style={[ StylesDefault.h3Text, { color: colorText } ]}>{item.name}</Text>
+                {item.description && <Text style={[ StylesDefault.subText, { color: colorText } ]}>{item.description}</Text>}
+                {item.price && <Text style={[ StylesDefault.subText, { color: colorText } ]}>Precio: ${item.price}</Text>}
                 <Text style={StylesDefault.subText}>{item.deleted ? "Desactivado" : "Activado"}</Text>
             </View>
             <View style={styles.actionContainer}>

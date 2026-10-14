@@ -22,11 +22,11 @@ export function StepClient({ data, updateData, errors, readonly }: PropsStepClie
 
             <View style={styles.input}>
 
-                <InputText title="Nombre completo" 
-                icono="user" 
+                <InputText title="Nombre completo *" 
+                icono="account" 
                 colorIcono="#000000"
                 color="#000000"
-                placeholder="Ejemplo Nombre"
+                placeholder="Ejemplo: Juan Perez"
                 value={eventCustomer.name}
                 onChangeText={(text) => updateData({
                     event_customer: {
@@ -47,7 +47,7 @@ export function StepClient({ data, updateData, errors, readonly }: PropsStepClie
             </View>
 
             <View style={styles.input}>
-            <InputText title="Teléfono" 
+            <InputText title="Teléfono *" 
             icono="phone" 
             colorIcono="#000000"
             color="#000000"
@@ -66,8 +66,8 @@ export function StepClient({ data, updateData, errors, readonly }: PropsStepClie
             </View>
 
             <View style={styles.input}>
-            <InputText title="Correo electrónico" 
-            icono="envelope" 
+            <InputText title="Correo electrónico *" 
+            icono="email" 
             colorIcono="#000000"
             color="#000000"
             placeholder="example@gmail.com"
@@ -84,7 +84,7 @@ export function StepClient({ data, updateData, errors, readonly }: PropsStepClie
             </View>
 
             <View style={styles.inputMulti}>
-            <InputTextMultiline title="Descripción del evento"
+            <InputTextMultiline title="Descripción del evento *"
                 icono="pencil"
                 colorIcono="#000000"
                 color="#000000"

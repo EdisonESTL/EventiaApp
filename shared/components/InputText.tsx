@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
 import { PropsInputText } from "../types/Shared.types";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { StylesDefault } from "../styles/StylesDefault";
+import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 
 interface InputTextProps extends PropsInputText {
     value?: string;
@@ -24,7 +24,7 @@ export function InputText({
         <View style={styles.inputText}>
             <Text style={[StylesDefault.bodyText, {color}]}>{title}</Text>
             <View style={styles.inputBox}>
-                <FontAwesome name={icono} size={24} color={colorIcono} />
+                <MaterialCommunityIcons name={icono} size={24} color={colorIcono} />
                 <TextInput 
                     style={styles.inText} 
                     placeholder={placeholder}
@@ -42,7 +42,7 @@ export function InputTextMultiline({title, icono, colorIcono, color, placeholder
     return(
         <View style={styles.inputText}>
             <View style={styles.inputBox}>
-                <FontAwesome name={icono} size={24} color={colorIcono} />
+                <MaterialCommunityIcons name={icono} size={24} color={colorIcono} />
                 <Text style={[StylesDefault.bodyText, {color}]}>{title}</Text>
             </View>
             <TextInput

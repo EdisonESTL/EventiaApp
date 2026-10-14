@@ -163,8 +163,8 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   imageItem: {
-    width: 80,
-    height: 97,
+    width: "25%",
+    height: "auto",
     marginRight: 10,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,

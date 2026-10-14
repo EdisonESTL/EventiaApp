@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
@@ -6,6 +6,7 @@ import HeadDefault from "@/features/admin/components/HeadDefault";
 import { FilterableEventsTable } from "@/features/events/components/FiltereableEventsTable";
 
 export default function EventScreen() {
+      
   return (
     <>
     <Stack.Screen 

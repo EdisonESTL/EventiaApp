@@ -16,50 +16,66 @@ export function DropDownPick({
   readonly
 }:PropsDropDownPick){
     //-------------  Picker Tipo de Evento   ------------------
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    return(
+    <View style ={[styles.container, {zIndex}]}>
+      <Text style ={StylesDefault.bodyText}>{title}</Text>
 
-  return(
-  <View style ={[styles.container, {zIndex}]}>
-    <Text style ={StylesDefault.bodyText}>{title}</Text>
-
-    <View style={styles.inputTextDefault}>
-      <AntDesign name={icono} size={20} color="black" />      
-        <DropDownPicker
-        open={readonly ? false : open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={(callback) => {
-          const val = callback(value);
-          setValue(val);
-        }}
-        placeholder={placeholder}
-        listMode="SCROLLVIEW"
-        style={styles.dropdown}
-        dropDownContainerStyle={styles.dropdown}
-        disabled= {readonly}
-        />      
+      <View style={styles.inputTextDefault}>
+        <AntDesign name={icono} size={20} color="black" />      
+          <DropDownPicker
+          mode="BADGE"
+          open={readonly ? false : open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={(callback) => {
+            const val = callback(value);
+            setValue(val);
+          }}
+          listMode="MODAL"
+          modalTitle={title}
+          modalContentContainerStyle={{
+            backgroundColor: '#ff5r99',
+            width: '90%',
+            alignSelf: 'center',
+            borderRadius: 10,
+            padding: 10,
+          }}
+          modalTitleStyle={{
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: '#000000',
+          }}
+          modalProps={{
+            animationType: 'slide',
+            transparent: false,
+          }}
+          placeholder={placeholder}
+          style={styles.dropdown}
+          disabled= {readonly}
+          />
+      </View>
     </View>
-  </View>
-  );
-}
+    );
+  }
 
-const styles = StyleSheet.create({
-  container:{
-    justifyContent: "center",
-    paddingHorizontal:10,
-    paddingVertical:5,
-    zIndex: 1000,
-  },
-  inputTextDefault:{
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-    paddingTop: 5,
-  },
-  dropdown: {
-    width: 350,
-    margin:0,
-    borderColor: '#ccc',
-  },
-});
+  const styles = StyleSheet.create({
+    container:{
+      justifyContent: "center",
+      paddingHorizontal:10,
+      paddingVertical:5,
+      gap: 5,
+    },
+    inputTextDefault:{
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 13,
+      paddingTop: 5,
+    },
+    dropdown: {
+      width: "90%",
+      margin:0,
+      borderColor: '#ccc',
+    },
+  });

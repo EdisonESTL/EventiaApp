@@ -29,7 +29,7 @@ export type PropsCircleButton ={
 
 export type PropsInputText={
   title: string;
-  icono: keyof typeof FontAwesome.glyphMap;
+  icono: keyof typeof MaterialCommunityIcons.glyphMap;
   colorIcono: string;
   color: string;
   placeholder: string;

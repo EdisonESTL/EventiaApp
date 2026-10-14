@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
       marginTop: "auto",
     },
     head:{
-      width: 50,
+      width: "40%",
       height: 50,
       borderRadius: 10,
       justifyContent: "center",

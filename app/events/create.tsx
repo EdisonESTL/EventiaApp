@@ -9,14 +9,17 @@ import { clientSchema } from "@/features/events/schemas/client.schema";
 import { eventSchema } from "@/features/events/schemas/event.schema";
 import { serviceSchema } from "@/features/events/schemas/service.schema";
 import { financialSchema } from "@/features/events/schemas/financial.schema";
+import { eventReminderNotification } from "@/features/events/services/notificationService";
 
 export default function Create(){
     //Funcion para guardar el evento
-    const saveEvent = (newEvent: Partial<Event>) => {
+    const saveEvent = async (newEvent: Partial<Event>) => {
         try {
 
             if(isValidBaseEvent(newEvent)){
                 createEvent(newEvent as Event);
+                const eventDate = new Date(newEvent.start_datetime || new Date()); ;
+                await eventReminderNotification(newEvent.name || "Evento", eventDate);
                 router.push("/");
             }else{
                 alert("Llene la informacion basica para guardar el evento:\n -Cliente \n -Evento \n -Servicio (minimo 1) \n -Informacion de pago");

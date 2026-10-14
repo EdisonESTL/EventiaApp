@@ -124,7 +124,9 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
     }, [data]);
 
     return(
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}
+        nestedScrollEnabled={true}
+        keyboardShouldPersistTaps="handled">
 
             <View style={styles.title}>
                 <HeadTitleDefault color="#000000" title="Datos del evento"
@@ -134,11 +136,11 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
 
             <View style={styles.input}>
                 
-                <InputText title="Nombre del evento"
-                icono="user"
+                <InputText title="Nombre del evento *"
+                icono="party-popper"
                 colorIcono="#000000"
                 color="#000000"
-                placeholder="Cumpleaños de ....."
+                placeholder="Ejemplo: Fiesta de cumpleaños"
                 value={data?.name}
                 onChangeText={(text) => updateData({ name: text })}
                 readonly={readonly}/>
@@ -155,45 +157,47 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
 
             <View style={styles.input}>
             <DropDownPick
-                title="Tipo de evento"
+                title="Tipo de evento *"
                 icono="heart"
                 value={eventType}
                 setValue={handleEventTypeChange}
                 items={eventTypes}
                 placeholder="Seleccione"
-                zIndex={1000}
+                zIndex={2000}
                 readonly={readonly}
             />
                 {errors?.event_type?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
-                        {errors.event_type._errors[0] }
+                        Seleccione un tipo de evento
                     </Text>
                 </View>
                 )}
             </View>
+
             <View style={styles.input}>
             <DropDownPick
-                title="Paquete solicitado"
+                title="Paquete solicitado *"
                 icono="gift"
                 value={eventPackage}
                 setValue={handleEventPackageChange}
                 items={eventPackages}
                 placeholder="Seleccione"
-                zIndex={999}
+                zIndex={1000}
                 readonly={readonly}
             />
                 {errors?.event_package?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
-                        {errors.event_package._errors[0] }
+                        Seleccione un paquete
                     </Text>
                 </View>
                 )}
             </View>
+
             <View style={styles.input}>
-            <InputText title="Ubicación"
-            icono="location-arrow"
+            <InputText title="Ubicación *"
+            icono="crosshairs-gps"
             colorIcono="#000000"
             color="#000000"
             placeholder="Ubicacion......."
@@ -203,13 +207,13 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
                 {errors?.location?._errors[0] && (
                 <View style={StylesDefault.errors}>
                     <Text style={StylesDefault.textError}>
-                        {errors.location._errors[0] }
+                        Ubicación es requerida
                     </Text>
                 </View>
                 )}
             </View>
             <View style={styles.input}>
-            <DateTimePick title="Fecha del evento"
+            <DateTimePick title="Fecha del evento *"
             icono="calendar"
             mode="date"
             value={startDateTime}
@@ -227,7 +231,7 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
             </View>
             <View style={styles.clockSection}>
 
-                <DateTimePick title="Hora inicio"
+                <DateTimePick title="Hora inicio *"
                 icono="clock"
                 mode="time"
                 value={startDateTime}
@@ -236,7 +240,7 @@ export function StepEvent({ data, updateData, errors, readonly }: PropsStepEvent
                 onChange={onChangeStartTime}
                 readonly={readonly}/>
 
-                <DateTimePick title="Hora fin"
+                <DateTimePick title="Hora fin *"
                 icono="clock"
                 mode="time"
                 value={endDateTime}
@@ -262,13 +266,12 @@ const styles = StyleSheet.create({
         flex:1,
     },
     title:{
-        flex:1,
+        width: "100%",
     },
     input:{
-        flex:1,
+        width: "100%",
     },
     clockSection:{
-        flex: 1,
         flexDirection: "row",
     },
 })
