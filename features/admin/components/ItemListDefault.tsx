@@ -26,7 +26,7 @@ export function ItemListDefault<T extends ListItemBase>({
 }: PropsItemListDefault<T>) {
     return (
         <View style={styles.itemContainer}>
-            <View >
+            <View style={styles.textContainer}>
                 <Text style={[ StylesDefault.h3Text, { color: colorText } ]}>{item.name}</Text>
                 {item.description && <Text style={[ StylesDefault.subText, { color: colorText } ]}>{item.description}</Text>}
                 {item.price && <Text style={[ StylesDefault.subText, { color: colorText } ]}>Precio: ${item.price}</Text>}
@@ -56,10 +56,9 @@ export function ItemListDefault<T extends ListItemBase>({
 const styles = StyleSheet.create({
     
     itemContainer:{
-        flex:1,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
+        //justifyContent: "space-between",
 
         padding: 10,
         gap: 10,
@@ -72,7 +71,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 1,
     },
+    textContainer:{
+        flex: 1,
+        flexDirection: "column",
+        gap: 5,
+    },
     actionContainer:{
+        flex: 0,
+        alignItems: "center",
+        justifyContent: "flex-end",
         flexDirection: "row",
         gap: 10,
     },

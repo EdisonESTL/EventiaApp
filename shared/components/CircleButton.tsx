@@ -18,7 +18,7 @@ export function CircleButton({icono, onPress, colorIcono, backgroundColor, reado
 
 const styles = StyleSheet.create({
     buttonCircle: {
-        width: "14%",
+        width: 55,
         height: 55,
         borderRadius: 60,
         padding: 5,
